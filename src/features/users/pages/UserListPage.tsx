@@ -85,7 +85,7 @@ export function UserListPage() {
       dataIndex: 'email',
       key: 'email',
       render: (email: string) => (
-        <span style={{ fontWeight: 500, color: '#1f1f1f' }}>{email}</span>
+        <span style={{ fontWeight: 500 }}>{email}</span>
       ),
     },
     {
@@ -104,10 +104,7 @@ export function UserListPage() {
       key: 'isActive',
       width: 140,
       render: (isActive: boolean) => (
-        <Tag
-          color={isActive ? 'success' : 'error'}
-          style={{ padding: '2px 8px', borderRadius: 4 }}
-        >
+        <Tag color={isActive ? 'success' : 'error'}>
           {isActive ? 'Hoạt động' : 'Đã khóa'}
         </Tag>
       ),
@@ -121,11 +118,10 @@ export function UserListPage() {
         <Space size={4}>
           <Tooltip title="Xem & Sửa thông tin">
             <Button
-              type="text"
+              type="link"
               size="small"
               icon={<EyeOutlined />}
               onClick={() => navigate(`/users/${record.id}`)}
-              style={{ color: '#1677ff' }}
             />
           </Tooltip>
           <ConfirmAction
@@ -157,7 +153,6 @@ export function UserListPage() {
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => navigate('/users/new')}
-          style={{ height: 38, display: 'flex', alignItems: 'center' }}
         >
           Thêm người dùng mới
         </Button>
@@ -168,7 +163,6 @@ export function UserListPage() {
         style={{
           marginBottom: 16,
           borderRadius: 8,
-          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
         }}
       >
         <Input.Search
@@ -203,6 +197,7 @@ export function UserListPage() {
           }}
           onChange={handleTableChange}
           locale={{ emptyText: 'Không tìm thấy người dùng nào phù hợp' }}
+          scroll={{ x: 720 }}
         />
       </Card>
     </PageContainer>

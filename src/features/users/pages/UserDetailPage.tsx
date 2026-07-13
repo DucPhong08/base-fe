@@ -14,6 +14,8 @@ import {
   Typography,
   Row,
   Col,
+  Flex,
+  theme,
 } from 'antd';
 import {
   UserOutlined,
@@ -40,6 +42,7 @@ export function UserDetailPage() {
   const navigate = useNavigate();
   const { message } = App.useApp();
   const [form] = Form.useForm();
+  const { token } = theme.useToken();
   const isNew = id === 'new';
 
   const {
@@ -120,21 +123,20 @@ export function UserDetailPage() {
         >
           <Row gutter={[24, 24]} align="middle">
             <Col xs={24} sm={16}>
-              <Space size={20} align="center">
+              <Flex gap={16} align="center" wrap="wrap">
                 <Avatar
-                  size={72}
+                  size={64}
                   style={{
-                    background:
-                      'linear-gradient(135deg, #1890ff 0%, #096dd9 100%)',
-                    fontSize: 28,
+                    background: `linear-gradient(135deg, ${token.colorPrimary}, ${token.colorPrimaryActive})`,
+                    fontSize: 24,
                     fontWeight: 600,
-                    boxShadow: '0 4px 10px rgba(24, 144, 255, 0.3)',
+                    boxShadow: token.boxShadow,
                   }}
                 >
                   {initials || <UserOutlined />}
                 </Avatar>
                 <div>
-                  <Space align="center" style={{ marginBottom: 4 }}>
+                  <Space align="center" wrap style={{ marginBottom: 4 }}>
                     <Typography.Title level={4} style={{ margin: 0 }}>
                       {user.lastName} {user.firstName}
                     </Typography.Title>
@@ -152,10 +154,15 @@ export function UserDetailPage() {
                     <MailOutlined style={{ marginRight: 6 }} /> {user.email}
                   </Typography.Text>
                 </div>
-              </Space>
+              </Flex>
             </Col>
-            <Col xs={24} sm={8} style={{ textAlign: 'right' }}>
-              <Typography.Text type="secondary" style={{ fontSize: 13 }}>
+            <Col
+              xs={24}
+              sm={8}
+              className="user-joined-date"
+              style={{ textAlign: 'right' }}
+            >
+              <Typography.Text type="secondary">
                 <CalendarOutlined style={{ marginRight: 6 }} /> Ngày gia nhập:{' '}
                 {user.createdAt
                   ? dayjs(user.createdAt).format('DD/MM/YYYY')
@@ -265,11 +272,7 @@ export function UserDetailPage() {
                               ]}
                             >
                               <Input
-                                prefix={
-                                  <MailOutlined
-                                    style={{ color: 'rgba(0,0,0,0.25)' }}
-                                  />
-                                }
+                                prefix={<MailOutlined />}
                                 placeholder="example@domain.com"
                               />
                             </Form.Item>
@@ -292,11 +295,7 @@ export function UserDetailPage() {
                               ]}
                             >
                               <Input.Password
-                                prefix={
-                                  <LockOutlined
-                                    style={{ color: 'rgba(0,0,0,0.25)' }}
-                                  />
-                                }
+                                prefix={<LockOutlined />}
                                 placeholder="Tối thiểu 6 ký tự"
                               />
                             </Form.Item>
@@ -311,11 +310,7 @@ export function UserDetailPage() {
                             ]}
                           >
                             <Input
-                              prefix={
-                                <UserOutlined
-                                  style={{ color: 'rgba(0,0,0,0.25)' }}
-                                />
-                              }
+                              prefix={<UserOutlined />}
                               placeholder="Nhập họ (ví dụ: Nguyễn)"
                             />
                           </Form.Item>
@@ -329,11 +324,7 @@ export function UserDetailPage() {
                             ]}
                           >
                             <Input
-                              prefix={
-                                <UserOutlined
-                                  style={{ color: 'rgba(0,0,0,0.25)' }}
-                                />
-                              }
+                              prefix={<UserOutlined />}
                               placeholder="Nhập tên (ví dụ: An)"
                             />
                           </Form.Item>

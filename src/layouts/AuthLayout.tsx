@@ -1,8 +1,11 @@
 import { Outlet } from 'react-router-dom';
-import { Layout, Typography, theme } from 'antd';
+import { Button, Layout, Tooltip, Typography, theme } from 'antd';
+import { MoonOutlined, SunOutlined } from '@ant-design/icons';
+import { useColorMode } from '../app/theme';
 
 export function AuthLayout() {
   const { token } = theme.useToken();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Layout
@@ -11,34 +14,66 @@ export function AuthLayout() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: `linear-gradient(135deg, ${token.colorPrimaryBg} 0%, #f0f5ff 50%, #e6f4ff 100%)`,
+        background: `linear-gradient(135deg, ${token.colorBgLayout} 0%, ${token.colorPrimaryBg} 50%, ${token.colorBgContainer} 100%)`,
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'auto',
+        padding: '32px 0',
+        boxSizing: 'border-box',
       }}
     >
+      <Tooltip
+        title={
+          colorMode === 'dark'
+            ? 'Chuyển sang giao diện sáng'
+            : 'Chuyển sang giao diện tối'
+        }
+      >
+        <Button
+          type="text"
+          shape="circle"
+          icon={colorMode === 'dark' ? <SunOutlined /> : <MoonOutlined />}
+          onClick={toggleColorMode}
+          aria-label={
+            colorMode === 'dark'
+              ? 'Chuyển sang giao diện sáng'
+              : 'Chuyển sang giao diện tối'
+          }
+          style={{ position: 'absolute', top: 16, right: 16, zIndex: 2 }}
+        />
+      </Tooltip>
+
       {/* Decorative circles */}
       <div
         style={{
           position: 'absolute',
-          width: 400,
-          height: 400,
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${token.colorPrimary}10, transparent 70%)`,
-          top: -100,
-          right: -100,
+          inset: 0,
+          overflow: 'hidden',
+          pointerEvents: 'none',
         }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          width: 300,
-          height: 300,
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${token.colorPrimary}08, transparent 70%)`,
-          bottom: -50,
-          left: -50,
-        }}
-      />
+      >
+        <div
+          style={{
+            position: 'absolute',
+            width: 400,
+            height: 400,
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${token.colorPrimary}10, transparent 70%)`,
+            top: -100,
+            right: -100,
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            width: 300,
+            height: 300,
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${token.colorPrimary}08, transparent 70%)`,
+            bottom: -50,
+            left: -50,
+          }}
+        />
+      </div>
 
       <div
         style={{
@@ -47,6 +82,7 @@ export function AuthLayout() {
           width: '100%',
           maxWidth: 420,
           padding: '0 16px',
+          boxSizing: 'border-box',
         }}
       >
         {/* Logo area */}
@@ -86,10 +122,11 @@ export function AuthLayout() {
         {/* Form card */}
         <div
           style={{
-            background: '#fff',
-            padding: 32,
+            background: token.colorBgContainer,
+            padding: 'clamp(24px, 5vw, 32px)',
             borderRadius: 12,
-            boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+            border: `1px solid ${token.colorBorderSecondary}`,
+            boxShadow: token.boxShadowSecondary,
             animation: 'fadeInUp 0.5s ease-out 0.1s both',
           }}
         >

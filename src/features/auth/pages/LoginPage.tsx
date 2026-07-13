@@ -42,18 +42,14 @@ export function LoginPage() {
           { type: 'email', message: 'Email không hợp lệ' },
         ]}
       >
-        <Input
-          prefix={<MailOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
-          placeholder="Email"
-          size="large"
-        />
+        <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
       </Form.Item>
       <Form.Item
         name="password"
         rules={[{ required: true, message: 'Vui lòng nhập mật khẩu' }]}
       >
         <Input.Password
-          prefix={<LockOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
+          prefix={<LockOutlined />}
           placeholder="Mật khẩu"
           size="large"
         />

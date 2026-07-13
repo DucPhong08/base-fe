@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Popconfirm, theme } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import type { ReactNode } from 'react';
 
@@ -19,6 +19,8 @@ export function ConfirmAction({
   danger = true, // default to true since it's mostly used for destructive actions like delete
   children,
 }: ConfirmActionProps) {
+  const { token } = theme.useToken();
+
   return (
     <Popconfirm
       title={title}
@@ -29,7 +31,7 @@ export function ConfirmAction({
       cancelText="Quay lại"
       icon={
         <QuestionCircleOutlined
-          style={{ color: danger ? '#ff4d4f' : '#1890ff' }}
+          style={{ color: danger ? token.colorError : token.colorPrimary }}
         />
       }
       placement="topRight"

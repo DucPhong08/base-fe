@@ -19,6 +19,8 @@ export function PageContainer({
       <Flex
         justify="space-between"
         align="flex-start"
+        wrap="wrap"
+        gap={16}
         style={{ marginBottom: 20 }}
       >
         <div>
@@ -28,7 +30,7 @@ export function PageContainer({
           {subtitle && (
             <Typography.Text
               type="secondary"
-              style={{ fontSize: 13, marginTop: 4, display: 'block' }}
+              style={{ fontSize: 14, marginTop: 4, display: 'block' }}
             >
               {subtitle}
             </Typography.Text>

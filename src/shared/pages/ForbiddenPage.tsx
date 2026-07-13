@@ -1,8 +1,9 @@
-import { Button, Result } from 'antd';
+import { Button, Result, theme } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 export function ForbiddenPage() {
   const navigate = useNavigate();
+  const { token } = theme.useToken();
 
   return (
     <div
@@ -11,7 +12,7 @@ export function ForbiddenPage() {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        background: '#fafafa',
+        background: token.colorBgLayout,
         animation: 'fadeIn 0.4s ease',
       }}
     >

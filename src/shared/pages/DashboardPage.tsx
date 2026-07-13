@@ -7,36 +7,35 @@ import {
 } from '@ant-design/icons';
 import { useAuth } from '../../features/auth/auth-provider';
 
-const stats = [
-  {
-    title: 'Người dùng',
-    icon: <TeamOutlined />,
-    color: '#1677ff',
-    bg: '#e6f4ff',
-  },
-  {
-    title: 'Túi thi',
-    icon: <SafetyCertificateOutlined />,
-    color: '#52c41a',
-    bg: '#f6ffed',
-  },
-  {
-    title: 'Bài thi',
-    icon: <FileTextOutlined />,
-    color: '#faad14',
-    bg: '#fffbe6',
-  },
-  {
-    title: 'Đã duyệt',
-    icon: <CheckCircleOutlined />,
-    color: '#722ed1',
-    bg: '#f9f0ff',
-  },
-];
-
 export function DashboardPage() {
   const { user } = useAuth();
   const { token } = theme.useToken();
+  const stats = [
+    {
+      title: 'Người dùng',
+      icon: <TeamOutlined />,
+      color: token.colorPrimary,
+      bg: token.colorPrimaryBg,
+    },
+    {
+      title: 'Túi thi',
+      icon: <SafetyCertificateOutlined />,
+      color: token.colorSuccess,
+      bg: token.colorSuccessBg,
+    },
+    {
+      title: 'Bài thi',
+      icon: <FileTextOutlined />,
+      color: token.colorWarning,
+      bg: token.colorWarningBg,
+    },
+    {
+      title: 'Đã duyệt',
+      icon: <CheckCircleOutlined />,
+      color: token.colorPrimaryActive,
+      bg: token.colorPrimaryBgHover,
+    },
+  ];
 
   return (
     <div>

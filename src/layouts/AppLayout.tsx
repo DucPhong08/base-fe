@@ -9,6 +9,8 @@ import {
   Typography,
   Breadcrumb,
   Avatar,
+  Grid,
+  Tooltip,
   theme,
 } from 'antd';
 import {
@@ -18,9 +20,12 @@ import {
   UserOutlined,
   LogoutOutlined,
   TeamOutlined,
+  MoonOutlined,
+  SunOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { useAuth } from '../features/auth/auth-provider';
+import { useColorMode } from '../app/theme';
 
 const { Header, Sider, Content } = Layout;
 
@@ -68,15 +73,19 @@ function useBreadcrumbItems() {
 
 export function AppLayout() {
   const [collapsed, setCollapsed] = useState(false);
+  const screens = Grid.useBreakpoint();
+  const isMobile = screens.lg === false;
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { colorMode, toggleColorMode } = useColorMode();
   const menuItems = useMenuItems();
   const breadcrumbItems = useBreadcrumbItems();
   const { token } = theme.useToken();
 
   const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
     navigate(key);
+    if (isMobile) setCollapsed(true);
   };
 
   const userMenuItems: MenuProps['items'] = [
@@ -88,7 +97,10 @@ export function AppLayout() {
             {user?.firstName} {user?.lastName}
           </Typography.Text>
           <br />
-          <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+          <Typography.Text
+            type="secondary"
+            style={{ fontSize: token.fontSizeSM }}
+          >
             {user?.email}
           </Typography.Text>
         </div>
@@ -118,6 +130,7 @@ export function AppLayout() {
         trigger={null}
         collapsible
         collapsed={collapsed}
+        collapsedWidth={isMobile ? 0 : 80}
         breakpoint="lg"
         onBreakpoint={(broken) => setCollapsed(broken)}
         style={{
@@ -186,78 +199,106 @@ export function AppLayout() {
         />
       </Sider>
 
+      {isMobile && !collapsed && (
+        <div
+          className="app-sider-backdrop"
+          onClick={() => setCollapsed(true)}
+          aria-hidden="true"
+        />
+      )}
+
       <Layout
         style={{
-          marginLeft: collapsed ? 80 : 200,
+          marginLeft: isMobile ? 0 : collapsed ? 80 : 200,
           transition: 'margin-left 0.2s ease',
         }}
       >
         <Header
           style={{
-            padding: '0 24px',
-            background: '#fff',
+            padding: isMobile ? '0 16px' : '0 24px',
+            background: token.colorBgContainer,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            borderBottom: '1px solid #f0f0f0',
+            borderBottom: `1px solid ${token.colorBorderSecondary}`,
             position: 'sticky',
             top: 0,
             zIndex: 99,
-            boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+            boxShadow: token.boxShadowTertiary,
           }}
         >
-          <Flex align="center" gap={16}>
+          <Flex align="center" gap={isMobile ? 8 : 16} style={{ minWidth: 0 }}>
             <Button
               type="text"
               icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
               onClick={() => setCollapsed(!collapsed)}
               style={{ fontSize: 16 }}
+              aria-label={collapsed ? 'Mở menu' : 'Thu gọn menu'}
             />
-            <Breadcrumb items={breadcrumbItems} />
+            <Breadcrumb className="app-breadcrumb" items={breadcrumbItems} />
           </Flex>
 
-          <Dropdown
-            menu={{ items: userMenuItems, onClick: handleUserMenuClick }}
-            placement="bottomRight"
-            trigger={['click']}
-          >
-            <Flex
-              align="center"
-              gap={8}
-              style={{
-                cursor: 'pointer',
-                padding: '4px 12px',
-                borderRadius: 8,
-                transition: 'background 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = token.colorBgTextHover;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-              }}
+          <Flex align="center" gap={4}>
+            <Tooltip
+              title={
+                colorMode === 'dark'
+                  ? 'Chuyển sang giao diện sáng'
+                  : 'Chuyển sang giao diện tối'
+              }
             >
-              <Avatar
-                size={32}
-                style={{
-                  background: `linear-gradient(135deg, ${token.colorPrimary}, ${token.colorPrimaryActive})`,
-                }}
-                icon={<UserOutlined />}
+              <Button
+                type="text"
+                icon={colorMode === 'dark' ? <SunOutlined /> : <MoonOutlined />}
+                onClick={toggleColorMode}
+                aria-label={
+                  colorMode === 'dark'
+                    ? 'Chuyển sang giao diện sáng'
+                    : 'Chuyển sang giao diện tối'
+                }
               />
-              <Typography.Text
+            </Tooltip>
+
+            <Dropdown
+              menu={{ items: userMenuItems, onClick: handleUserMenuClick }}
+              placement="bottomRight"
+              trigger={['click']}
+            >
+              <Flex
+                align="center"
+                gap={8}
                 style={{
-                  maxWidth: 120,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  borderRadius: 8,
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = token.colorBgTextHover;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
                 }}
               >
-                {user?.firstName} {user?.lastName}
-              </Typography.Text>
-            </Flex>
-          </Dropdown>
+                <Avatar
+                  size={32}
+                  style={{
+                    background: `linear-gradient(135deg, ${token.colorPrimary}, ${token.colorPrimaryActive})`,
+                  }}
+                  icon={<UserOutlined />}
+                />
+                <Typography.Text
+                  className="app-header-user-name"
+                  ellipsis
+                  style={{ maxWidth: 120 }}
+                >
+                  {user?.firstName} {user?.lastName}
+                </Typography.Text>
+              </Flex>
+            </Dropdown>
+          </Flex>
         </Header>
 
-        <Content style={{ margin: 24 }}>
+        <Content style={{ margin: screens.md === false ? 16 : 24 }}>
           <div className="page-animate">
             <Outlet />
           </div>
