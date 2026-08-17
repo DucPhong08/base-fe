@@ -52,7 +52,7 @@ export function LoginPage() {
     <div>
       <Typography.Title
         level={4}
-        style={{ marginTop: 0, marginBottom: 6, fontWeight: 600 }}
+        style={{ marginTop: 0, marginBottom: 4, fontWeight: 600 }}
       >
         Đăng nhập hệ thống
       </Typography.Title>
@@ -71,38 +71,26 @@ export function LoginPage() {
       >
         <Form.Item
           name="email"
-          label={
-            <Typography.Text strong style={{ fontSize: 13 }}>
-              Địa chỉ Email
-            </Typography.Text>
-          }
+          label="Địa chỉ Email"
           rules={[
             { required: true, message: 'Vui lòng nhập địa chỉ email' },
             { type: 'email', message: 'Email không đúng định dạng' },
           ]}
         >
           <Input
-            prefix={<MailOutlined style={{ color: '#94a3b8' }} />}
+            prefix={<MailOutlined style={{ color: '#9ca3af' }} />}
             placeholder="admin.phong@quantri.gov.vn"
-            size="large"
-            style={{ borderRadius: 8 }}
           />
         </Form.Item>
 
         <Form.Item
           name="password"
-          label={
-            <Typography.Text strong style={{ fontSize: 13 }}>
-              Mật khẩu truy cập
-            </Typography.Text>
-          }
+          label="Mật khẩu truy cập"
           rules={[{ required: true, message: 'Vui lòng nhập mật khẩu' }]}
         >
           <Input.Password
-            prefix={<LockOutlined style={{ color: '#94a3b8' }} />}
+            prefix={<LockOutlined style={{ color: '#9ca3af' }} />}
             placeholder="••••••••"
-            size="large"
-            style={{ borderRadius: 8 }}
           />
         </Form.Item>
 
@@ -112,8 +100,6 @@ export function LoginPage() {
             htmlType="submit"
             loading={loading}
             block
-            size="large"
-            style={{ height: 42, fontWeight: 600, borderRadius: 8 }}
             icon={<ArrowRightOutlined />}
           >
             Đăng nhập ngay
@@ -131,7 +117,6 @@ export function LoginPage() {
           size="small"
           icon={<UserOutlined />}
           onClick={fillQuickAdmin}
-          style={{ borderRadius: 6 }}
         >
           Điền nhanh tài khoản Admin
         </Button>

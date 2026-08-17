@@ -166,48 +166,32 @@ export function UserDetailPage() {
     >
       {!isNew && user && (
         <Card
-          style={{
-            marginBottom: 20,
-            borderRadius: 12,
-            border: '1px solid rgba(0,0,0,0.06)',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-          }}
-          styles={{ body: { padding: '20px 24px' } }}
+          style={{ marginBottom: 16 }}
+          styles={{ body: { padding: '16px 20px' } }}
         >
-          <Row gutter={[24, 16]} align="middle">
+          <Row gutter={[20, 16]} align="middle">
             <Col xs={24} sm={16}>
               <Flex gap={16} align="center" wrap="wrap">
                 <Avatar
-                  size={60}
+                  size={52}
                   style={{
-                    background: user.isActive
-                      ? 'linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)'
-                      : '#94a3b8',
-                    fontSize: 22,
+                    background: user.isActive ? '#0866ff' : '#9ca3af',
+                    fontSize: 20,
                     fontWeight: 600,
-                    boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)',
                   }}
                 >
                   {initials || <UserOutlined />}
                 </Avatar>
                 <div>
-                  <Space align="center" wrap style={{ marginBottom: 4 }}>
+                  <Space align="center" wrap style={{ marginBottom: 2 }}>
                     <Typography.Title
                       level={4}
-                      style={{ margin: 0, fontWeight: 700 }}
+                      style={{ margin: 0, fontWeight: 600 }}
                     >
                       {user.lastName} {user.firstName}
                     </Typography.Title>
-                    <Tag
-                      color={user.isActive ? 'success' : 'error'}
-                      style={{
-                        borderRadius: 12,
-                        border: 0,
-                        padding: '2px 10px',
-                        fontWeight: 500,
-                      }}
-                    >
-                      {user.isActive ? '● Hoạt động' : '○ Đã khóa'}
+                    <Tag color={user.isActive ? 'success' : 'error'}>
+                      {user.isActive ? 'Hoạt động' : 'Đã khóa'}
                     </Tag>
                   </Space>
                   <Typography.Text
@@ -242,20 +226,16 @@ export function UserDetailPage() {
             key: 'info',
             label: 'Thông tin tài khoản',
             children: (
-              <Row gutter={[20, 20]}>
+              <Row gutter={[16, 16]}>
                 {!isNew && user && (
                   <Col xs={24} lg={9}>
                     <Card
                       title={
                         <Typography.Text strong style={{ fontSize: 15 }}>
-                          📌 Thẻ căn cước hệ thống
+                          Thẻ căn cước hệ thống
                         </Typography.Text>
                       }
-                      style={{
-                        height: '100%',
-                        borderRadius: 10,
-                        border: '1px solid rgba(0,0,0,0.06)',
-                      }}
+                      style={{ height: '100%' }}
                     >
                       <Descriptions bordered column={1} size="small">
                         <Descriptions.Item
@@ -277,10 +257,7 @@ export function UserDetailPage() {
                             </span>
                           }
                         >
-                          <Tag
-                            color="blue"
-                            style={{ borderRadius: 6, fontWeight: 500 }}
-                          >
+                          <Tag color="blue">
                             {user.provider?.toUpperCase() || 'LOCAL'}
                           </Tag>
                         </Descriptions.Item>
@@ -291,10 +268,7 @@ export function UserDetailPage() {
                             </span>
                           }
                         >
-                          <Tag
-                            color="purple"
-                            style={{ borderRadius: 6, fontWeight: 500 }}
-                          >
+                          <Tag color="geekblue">
                             {user.role?.name ||
                               user.role?.code ||
                               user.roles?.[0] ||
@@ -324,13 +298,9 @@ export function UserDetailPage() {
                       <Typography.Text strong style={{ fontSize: 15 }}>
                         {isNew
                           ? 'Thông tin người dùng mới'
-                          : '✏️ Chỉnh sửa thông tin'}
+                          : 'Chỉnh sửa thông tin'}
                       </Typography.Text>
                     }
-                    style={{
-                      borderRadius: 10,
-                      border: '1px solid rgba(0,0,0,0.06)',
-                    }}
                   >
                     <Form
                       form={form}
@@ -357,7 +327,7 @@ export function UserDetailPage() {
                             >
                               <Input
                                 prefix={
-                                  <MailOutlined style={{ color: '#94a3b8' }} />
+                                  <MailOutlined style={{ color: '#9ca3af' }} />
                                 }
                                 placeholder="example@quantri.gov.vn"
                               />
@@ -382,7 +352,7 @@ export function UserDetailPage() {
                             >
                               <Input.Password
                                 prefix={
-                                  <LockOutlined style={{ color: '#94a3b8' }} />
+                                  <LockOutlined style={{ color: '#9ca3af' }} />
                                 }
                                 placeholder="Tối thiểu 6 ký tự"
                               />
@@ -399,7 +369,7 @@ export function UserDetailPage() {
                           >
                             <Input
                               prefix={
-                                <UserOutlined style={{ color: '#94a3b8' }} />
+                                <UserOutlined style={{ color: '#9ca3af' }} />
                               }
                               placeholder="Nguyễn Đức"
                             />
@@ -415,7 +385,7 @@ export function UserDetailPage() {
                           >
                             <Input
                               prefix={
-                                <UserOutlined style={{ color: '#94a3b8' }} />
+                                <UserOutlined style={{ color: '#9ca3af' }} />
                               }
                               placeholder="Phong"
                             />
@@ -474,12 +444,7 @@ export function UserDetailPage() {
                   key: 'logs',
                   label: 'Nhật ký hoạt động',
                   children: (
-                    <Card
-                      style={{
-                        borderRadius: 10,
-                        border: '1px solid rgba(0,0,0,0.06)',
-                      }}
-                    >
+                    <Card>
                       <Timeline
                         items={activityLogs}
                         style={{ marginTop: 12 }}

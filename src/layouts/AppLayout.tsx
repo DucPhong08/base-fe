@@ -183,18 +183,17 @@ export function AppLayout() {
         >
           <div
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: 8,
-              background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+              width: 34,
+              height: 34,
+              borderRadius: 6,
+              background: '#0866ff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: 700,
               color: '#ffffff',
               flexShrink: 0,
-              boxShadow: '0 2px 10px rgba(37, 99, 235, 0.35)',
             }}
           >
             QT
@@ -205,7 +204,7 @@ export function AppLayout() {
                 strong
                 style={{
                   color: '#f8fafc',
-                  fontSize: 15,
+                  fontSize: 14,
                   display: 'block',
                   lineHeight: 1.2,
                 }}
@@ -217,7 +216,6 @@ export function AppLayout() {
                   color: '#64748b',
                   fontSize: 11,
                   display: 'block',
-                  fontWeight: 500,
                 }}
               >
                 Cổng Điều Hành Enterprise
@@ -261,7 +259,6 @@ export function AppLayout() {
             position: 'sticky',
             top: 0,
             zIndex: 99,
-            boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.03)',
           }}
         >
           <Flex align="center" gap={isMobile ? 8 : 16} style={{ minWidth: 0 }}>
@@ -275,7 +272,7 @@ export function AppLayout() {
             <Breadcrumb className="app-breadcrumb" items={breadcrumbItems} />
           </Flex>
 
-          <Flex align="center" gap={10}>
+          <Flex align="center" gap={12}>
             {/* System Live Status — subtle inline text */}
             {!isMobile && (
               <Flex
@@ -283,7 +280,6 @@ export function AppLayout() {
                 gap={6}
                 style={{
                   fontSize: 12,
-                  fontWeight: 500,
                   color: colorMode === 'dark' ? '#34d399' : '#059669',
                   whiteSpace: 'nowrap',
                 }}
@@ -376,22 +372,14 @@ export function AppLayout() {
                 gap={8}
                 style={{
                   cursor: 'pointer',
-                  padding: '4px 8px',
-                  borderRadius: 8,
-                  transition: 'background 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = token.colorBgTextHover;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
+                  padding: '4px 6px',
+                  borderRadius: 6,
                 }}
               >
                 <Avatar
-                  size={32}
+                  size={30}
                   style={{
-                    background:
-                      'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                    background: '#0866ff',
                     fontWeight: 600,
                   }}
                   icon={<UserOutlined />}
@@ -399,7 +387,7 @@ export function AppLayout() {
                 <Typography.Text
                   className="app-header-user-name"
                   ellipsis
-                  style={{ maxWidth: 160, fontWeight: 500 }}
+                  style={{ maxWidth: 160, fontSize: 14 }}
                 >
                   {user?.lastName} {user?.firstName}
                 </Typography.Text>
@@ -409,9 +397,7 @@ export function AppLayout() {
         </Header>
 
         <Content style={{ margin: screens.md === false ? 16 : 24 }}>
-          <div className="page-animate">
-            <Outlet />
-          </div>
+          <Outlet />
         </Content>
       </Layout>
     </Layout>

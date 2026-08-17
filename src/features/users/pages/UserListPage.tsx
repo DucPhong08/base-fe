@@ -116,24 +116,12 @@ export function UserListPage() {
           : 'Chuyên viên');
 
     if (roleCode === 'admin') {
-      return (
-        <Tag color="purple" style={{ borderRadius: 6, fontWeight: 500 }}>
-          {roleName}
-        </Tag>
-      );
+      return <Tag color="blue">{roleName}</Tag>;
     }
     if (roleCode === 'manager') {
-      return (
-        <Tag color="blue" style={{ borderRadius: 6, fontWeight: 500 }}>
-          {roleName}
-        </Tag>
-      );
+      return <Tag color="geekblue">{roleName}</Tag>;
     }
-    return (
-      <Tag color="default" style={{ borderRadius: 6, fontWeight: 500 }}>
-        {roleName}
-      </Tag>
-    );
+    return <Tag>{roleName}</Tag>;
   };
 
   const columns = [
@@ -147,11 +135,9 @@ export function UserListPage() {
         return (
           <Flex align="center" gap={12}>
             <Avatar
-              size={36}
+              size={34}
               style={{
-                background: record.isActive
-                  ? 'linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)'
-                  : '#94a3b8',
+                background: record.isActive ? '#0866ff' : '#9ca3af',
                 fontWeight: 600,
                 fontSize: 13,
                 flexShrink: 0,
@@ -187,16 +173,8 @@ export function UserListPage() {
       key: 'isActive',
       width: 140,
       render: (isActive: boolean) => (
-        <Tag
-          color={isActive ? 'success' : 'error'}
-          style={{
-            borderRadius: 12,
-            border: 0,
-            padding: '2px 10px',
-            fontWeight: 500,
-          }}
-        >
-          {isActive ? '● Hoạt động' : '○ Đã khóa'}
+        <Tag color={isActive ? 'success' : 'error'}>
+          {isActive ? 'Hoạt động' : 'Đã khóa'}
         </Tag>
       ),
     },
@@ -217,12 +195,12 @@ export function UserListPage() {
       width: 120,
       align: 'center' as const,
       render: (_: unknown, record: User) => (
-        <Space size={6}>
+        <Space size={4}>
           <Tooltip title="Xem & Chỉnh sửa thông tin">
             <Button
               type="text"
               size="small"
-              icon={<EditOutlined style={{ color: '#2563eb' }} />}
+              icon={<EditOutlined style={{ color: '#0866ff' }} />}
               onClick={() => navigate(`/users/${record.id}`)}
             />
           </Tooltip>
@@ -251,13 +229,12 @@ export function UserListPage() {
       title="Danh sách người dùng"
       subtitle="Quản lý hồ sơ tài khoản, phân quyền quản trị và trạng thái truy cập."
       extra={
-        <Flex gap={10}>
+        <Flex gap={8}>
           <Button
             icon={<DownloadOutlined />}
             onClick={() =>
               message.info('Đang xuất danh sách tài khoản dưới dạng CSV...')
             }
-            style={{ height: 38 }}
           >
             Xuất dữ liệu
           </Button>
@@ -265,7 +242,6 @@ export function UserListPage() {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => navigate('/users/new')}
-            style={{ height: 38 }}
           >
             Thêm người dùng mới
           </Button>
@@ -273,16 +249,8 @@ export function UserListPage() {
       }
     >
       {/* Filter & Role Tabs Bar */}
-      <Card
-        size="small"
-        style={{
-          marginBottom: 16,
-          borderRadius: 10,
-          border: '1px solid rgba(0,0,0,0.06)',
-        }}
-        styles={{ body: { padding: '14px 18px' } }}
-      >
-        <Flex justify="space-between" align="center" wrap="wrap" gap={14}>
+      <Card size="small" style={{ marginBottom: 16 }}>
+        <Flex justify="space-between" align="center" wrap="wrap" gap={12}>
           <Flex align="center" gap={12} wrap="wrap">
             <Segmented
               value={roleFilter}
@@ -296,7 +264,7 @@ export function UserListPage() {
             />
           </Flex>
 
-          <Flex align="center" gap={12} style={{ minWidth: 320 }}>
+          <Flex align="center" gap={12} style={{ minWidth: 280 }}>
             <Input.Search
               placeholder="Tìm theo email, tên..."
               defaultValue={search}
@@ -314,14 +282,7 @@ export function UserListPage() {
       </Card>
 
       {/* Main Users Table */}
-      <Card
-        styles={{ body: { padding: 0 } }}
-        style={{
-          borderRadius: 10,
-          overflow: 'hidden',
-          border: '1px solid rgba(0,0,0,0.06)',
-        }}
-      >
+      <Card styles={{ body: { padding: 0 } }}>
         <Table
           rowKey="id"
           columns={columns}

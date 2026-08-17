@@ -1,89 +1,41 @@
-/* ===== Global Styles & Animations (Phong cách Việt Nam 2026) ===== */
+/* ===== Global Design System Styles (Facebook High-Contrast Light Theme) ===== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --app-bg-layout: #f8fafc;
-  --app-card-hover-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-  --app-elevated-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  --app-scrollbar-thumb: rgba(148, 163, 184, 0.4);
-  --app-scrollbar-thumb-hover: rgba(100, 116, 139, 0.6);
-  --app-border-color: #e2e8f0;
+  --app-bg-layout: #f0f2f5;
+  --app-border-color: #e4e6eb;
+  --app-scrollbar-thumb: rgba(140, 147, 157, 0.4);
+  --app-scrollbar-thumb-hover: rgba(100, 107, 117, 0.6);
 }
 
 :root[data-theme='dark'] {
-  --app-bg-layout: #090d16;
-  --app-card-hover-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-  --app-elevated-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-  --app-scrollbar-thumb: rgba(51, 65, 85, 0.5);
-  --app-scrollbar-thumb-hover: rgba(71, 85, 105, 0.8);
-  --app-border-color: #1e293b;
+  --app-bg-layout: #0b0f19;
+  --app-border-color: #263347;
+  --app-scrollbar-thumb: rgba(75, 85, 99, 0.5);
+  --app-scrollbar-thumb-hover: rgba(107, 114, 128, 0.8);
 }
 
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-  }
-}
-
-/* Page content animation */
-.page-animate {
-  animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Live Status Pulse Dot */
+/* Status indicator dot */
 .status-pulse-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #10b981;
+  background-color: #31a24c;
   display: inline-block;
-  animation: pulseGlow 2s infinite;
-}
-
-/* Card Improvements — subtle transition only, no aggressive hover */
-.ant-card {
-  transition: box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 /* Table Polish */
 .ant-table-wrapper {
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
 .ant-table-thead > tr > th {
   font-weight: 600 !important;
-  text-transform: uppercase;
-  font-size: 11px !important;
-  letter-spacing: 0.5px;
-}
-
-.ant-table-tbody > tr {
-  transition: background-color 0.15s ease;
+  font-size: 13px !important;
+  color: #050505 !important;
+  letter-spacing: 0.2px;
 }
 
 /* Custom Scrollbar */
@@ -98,7 +50,7 @@
 
 ::-webkit-scrollbar-thumb {
   background: var(--app-scrollbar-thumb);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -110,6 +62,7 @@ body {
   margin: 0;
   min-width: 320px;
   background: var(--app-bg-layout);
+  color: #050505;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -119,11 +72,9 @@ body {
   position: fixed;
   inset: 0;
   z-index: 99;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.2s ease;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 ::selection {
-  background: rgba(37, 99, 235, 0.2);
+  background: rgba(8, 102, 255, 0.2);
 }
