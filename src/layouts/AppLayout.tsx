@@ -45,7 +45,7 @@ function useMenuItems(): MenuProps['items'] {
   const items: MenuProps['items'] = [
     {
       key: '/',
-      icon: <DashboardOutlined />,
+      icon: <DashboardOutlined style={{ fontSize: 18 }} />,
       label: 'Tổng quan điều hành',
     },
   ];
@@ -53,23 +53,21 @@ function useMenuItems(): MenuProps['items'] {
   if (hasRole('admin')) {
     items.push({
       key: '/users',
-      icon: <TeamOutlined />,
+      icon: <TeamOutlined style={{ fontSize: 18 }} />,
       label: 'Quản lý người dùng',
     });
   }
 
   items.push({
     key: '/audit',
-    icon: <SafetyCertificateOutlined />,
+    icon: <SafetyCertificateOutlined style={{ fontSize: 18 }} />,
     label: 'Nhật ký truy vết',
-    disabled: true,
   });
 
   items.push({
     key: '/settings',
-    icon: <SettingOutlined />,
+    icon: <SettingOutlined style={{ fontSize: 18 }} />,
     label: 'Cấu hình hệ thống',
-    disabled: true,
   });
 
   return items;
@@ -83,6 +81,8 @@ function useBreadcrumbItems() {
   const breadcrumbMap: Record<string, string> = {
     users: 'Quản lý người dùng',
     new: 'Thêm mới',
+    audit: 'Nhật ký truy vết',
+    settings: 'Cấu hình hệ thống',
   };
 
   const items = [{ title: 'Trang chủ' }];
@@ -117,12 +117,12 @@ export function AppLayout() {
       key: 'user-info',
       label: (
         <div style={{ padding: '6px 4px' }}>
-          <Typography.Text strong style={{ display: 'block' }}>
+          <Typography.Text strong style={{ display: 'block', fontSize: 15 }}>
             {user?.lastName} {user?.firstName}
           </Typography.Text>
           <Typography.Text
             type="secondary"
-            style={{ fontSize: 12, display: 'block' }}
+            style={{ fontSize: 13, display: 'block' }}
           >
             {user?.email}
           </Typography.Text>
@@ -153,7 +153,7 @@ export function AppLayout() {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        width={230}
+        width={260}
         collapsedWidth={isMobile ? 0 : 80}
         breakpoint="lg"
         onBreakpoint={(broken) => setCollapsed(broken)}
@@ -164,7 +164,7 @@ export function AppLayout() {
           bottom: 0,
           zIndex: 100,
           background: '#0b1120',
-          borderRight: '1px solid rgba(255, 255, 255, 0.07)',
+          borderRight: '1px solid rgba(255, 255, 255, 0.08)',
           overflow: 'auto',
         }}
       >
@@ -176,21 +176,21 @@ export function AppLayout() {
             alignItems: 'center',
             justifyContent: collapsed ? 'center' : 'flex-start',
             gap: 12,
-            padding: '0 18px',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.07)',
+            padding: '0 20px',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
             transition: 'all 0.2s ease',
           }}
         >
           <div
             style={{
-              width: 34,
-              height: 34,
-              borderRadius: 6,
+              width: 38,
+              height: 38,
+              borderRadius: 8,
               background: '#0866ff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: 700,
               color: '#ffffff',
               flexShrink: 0,
@@ -203,19 +203,21 @@ export function AppLayout() {
               <Typography.Text
                 strong
                 style={{
-                  color: '#f8fafc',
-                  fontSize: 14,
+                  color: '#ffffff',
+                  fontSize: 16,
                   display: 'block',
                   lineHeight: 1.2,
+                  fontWeight: 700,
                 }}
               >
                 {SYSTEM_NAME}
               </Typography.Text>
               <Typography.Text
                 style={{
-                  color: '#64748b',
-                  fontSize: 11,
+                  color: '#94a3b8',
+                  fontSize: 12,
                   display: 'block',
+                  fontWeight: 500,
                 }}
               >
                 Cổng Điều Hành Enterprise
@@ -230,7 +232,12 @@ export function AppLayout() {
           selectedKeys={[selectedKey]}
           items={menuItems}
           onClick={handleMenuClick}
-          style={{ background: 'transparent', borderRight: 0, marginTop: 12 }}
+          style={{
+            background: 'transparent',
+            borderRight: 0,
+            marginTop: 14,
+            fontWeight: 600,
+          }}
         />
       </Sider>
 
@@ -244,7 +251,7 @@ export function AppLayout() {
 
       <Layout
         style={{
-          marginLeft: isMobile ? 0 : collapsed ? 80 : 230,
+          marginLeft: isMobile ? 0 : collapsed ? 80 : 260,
           transition: 'margin-left 0.2s ease',
         }}
       >
@@ -266,20 +273,21 @@ export function AppLayout() {
               type="text"
               icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
               onClick={() => setCollapsed(!collapsed)}
-              style={{ fontSize: 16 }}
+              style={{ fontSize: 18 }}
               aria-label={collapsed ? 'Mở menu' : 'Thu gọn menu'}
             />
             <Breadcrumb className="app-breadcrumb" items={breadcrumbItems} />
           </Flex>
 
-          <Flex align="center" gap={12}>
-            {/* System Live Status — subtle inline text */}
+          <Flex align="center" gap={14}>
+            {/* System Live Status */}
             {!isMobile && (
               <Flex
                 align="center"
-                gap={6}
+                gap={8}
                 style={{
-                  fontSize: 12,
+                  fontSize: 13,
+                  fontWeight: 600,
                   color: colorMode === 'dark' ? '#34d399' : '#059669',
                   whiteSpace: 'nowrap',
                 }}
@@ -292,10 +300,10 @@ export function AppLayout() {
             {/* Notification Popover */}
             <Popover
               content={
-                <div style={{ width: 280 }}>
+                <div style={{ width: 300 }}>
                   <Typography.Text
                     strong
-                    style={{ display: 'block', marginBottom: 8 }}
+                    style={{ display: 'block', marginBottom: 8, fontSize: 15 }}
                   >
                     Thông báo mới
                   </Typography.Text>
@@ -308,7 +316,7 @@ export function AppLayout() {
                           title={
                             <Typography.Text
                               style={{
-                                fontSize: 13,
+                                fontSize: 14,
                                 fontWeight: item.read ? 400 : 600,
                               }}
                             >
@@ -318,7 +326,7 @@ export function AppLayout() {
                           description={
                             <Typography.Text
                               type="secondary"
-                              style={{ fontSize: 11 }}
+                              style={{ fontSize: 12 }}
                             >
                               {item.time}
                             </Typography.Text>
@@ -336,7 +344,7 @@ export function AppLayout() {
                 <Button
                   type="text"
                   icon={<BellOutlined />}
-                  style={{ fontSize: 16 }}
+                  style={{ fontSize: 18 }}
                 />
               </Badge>
             </Popover>
@@ -353,6 +361,7 @@ export function AppLayout() {
                 type="text"
                 icon={colorMode === 'dark' ? <SunOutlined /> : <MoonOutlined />}
                 onClick={toggleColorMode}
+                style={{ fontSize: 18 }}
                 aria-label={
                   colorMode === 'dark'
                     ? 'Chuyển sang giao diện sáng'
@@ -369,15 +378,15 @@ export function AppLayout() {
             >
               <Flex
                 align="center"
-                gap={8}
+                gap={10}
                 style={{
                   cursor: 'pointer',
-                  padding: '4px 6px',
+                  padding: '4px 8px',
                   borderRadius: 6,
                 }}
               >
                 <Avatar
-                  size={30}
+                  size={34}
                   style={{
                     background: '#0866ff',
                     fontWeight: 600,
@@ -387,7 +396,7 @@ export function AppLayout() {
                 <Typography.Text
                   className="app-header-user-name"
                   ellipsis
-                  style={{ maxWidth: 160, fontSize: 14 }}
+                  style={{ maxWidth: 180, fontSize: 15, fontWeight: 600 }}
                 >
                   {user?.lastName} {user?.firstName}
                 </Typography.Text>

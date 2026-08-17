@@ -9,7 +9,6 @@ import {
   Form,
   Input,
   Switch,
-  Avatar,
   Space,
   Typography,
   Row,
@@ -27,10 +26,14 @@ import {
   KeyOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { PageContainer } from '../../../shared/ui/PageContainer';
-import { PageError } from '../../../shared/ui/PageError';
-import { PageLoading } from '../../../shared/ui/PageLoading';
-import { FormActions } from '../../../shared/ui/FormActions';
+import {
+  PageContainer,
+  PageError,
+  PageLoading,
+  FormActions,
+  UserAvatar,
+  ActiveTag,
+} from '../../../shared/ui';
 import {
   useUserQuery,
   useUpdateUserMutation,
@@ -105,21 +108,16 @@ export function UserDetailPage() {
   if (!isNew && isError)
     return <PageError message={error?.message} onRetry={refetch} />;
 
-  // Get user avatar initials
-  const initials = user
-    ? `${user.lastName?.[0] || ''}${user.firstName?.[0] || ''}`.toUpperCase()
-    : 'U';
-
   const activityLogs = [
     {
       color: 'blue',
       children: (
         <div>
-          <Typography.Text strong style={{ fontSize: 13 }}>
+          <Typography.Text strong style={{ fontSize: 14 }}>
             Cập nhật trạng thái phân quyền
           </Typography.Text>
           <br />
-          <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+          <Typography.Text type="secondary" style={{ fontSize: 13 }}>
             Hôm nay lúc 09:15 bởi Admin Phong
           </Typography.Text>
         </div>
@@ -129,11 +127,11 @@ export function UserDetailPage() {
       color: 'green',
       children: (
         <div>
-          <Typography.Text strong style={{ fontSize: 13 }}>
+          <Typography.Text strong style={{ fontSize: 14 }}>
             Đăng nhập hệ thống thành công
           </Typography.Text>
           <br />
-          <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+          <Typography.Text type="secondary" style={{ fontSize: 13 }}>
             Địa chỉ IP: 14.225.18.42 (Hà Nội, Việt Nam)
           </Typography.Text>
         </div>
@@ -143,11 +141,11 @@ export function UserDetailPage() {
       color: 'gray',
       children: (
         <div>
-          <Typography.Text strong style={{ fontSize: 13 }}>
+          <Typography.Text strong style={{ fontSize: 14 }}>
             Đồng bộ tài khoản từ SSO Đào tạo
           </Typography.Text>
           <br />
-          <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+          <Typography.Text type="secondary" style={{ fontSize: 13 }}>
             Tự động kích hoạt quyền Chuyên viên
           </Typography.Text>
         </div>
@@ -167,36 +165,30 @@ export function UserDetailPage() {
       {!isNew && user && (
         <Card
           style={{ marginBottom: 16 }}
-          styles={{ body: { padding: '16px 20px' } }}
+          styles={{ body: { padding: '18px 20px' } }}
         >
           <Row gutter={[20, 16]} align="middle">
             <Col xs={24} sm={16}>
               <Flex gap={16} align="center" wrap="wrap">
-                <Avatar
+                <UserAvatar
+                  firstName={user.firstName}
+                  lastName={user.lastName}
+                  isActive={user.isActive}
                   size={52}
-                  style={{
-                    background: user.isActive ? '#0866ff' : '#9ca3af',
-                    fontSize: 20,
-                    fontWeight: 600,
-                  }}
-                >
-                  {initials || <UserOutlined />}
-                </Avatar>
+                />
                 <div>
                   <Space align="center" wrap style={{ marginBottom: 2 }}>
                     <Typography.Title
                       level={4}
-                      style={{ margin: 0, fontWeight: 600 }}
+                      style={{ margin: 0, fontWeight: 700 }}
                     >
                       {user.lastName} {user.firstName}
                     </Typography.Title>
-                    <Tag color={user.isActive ? 'success' : 'error'}>
-                      {user.isActive ? 'Hoạt động' : 'Đã khóa'}
-                    </Tag>
+                    <ActiveTag isActive={user.isActive} />
                   </Space>
                   <Typography.Text
                     type="secondary"
-                    style={{ display: 'block', fontSize: 13 }}
+                    style={{ display: 'block', fontSize: 14 }}
                   >
                     <MailOutlined style={{ marginRight: 6 }} /> {user.email}
                   </Typography.Text>
@@ -204,9 +196,9 @@ export function UserDetailPage() {
               </Flex>
             </Col>
             <Col xs={24} sm={8} style={{ textAlign: 'right' }}>
-              <Typography.Text type="secondary" style={{ fontSize: 13 }}>
+              <Typography.Text type="secondary" style={{ fontSize: 14 }}>
                 <CalendarOutlined style={{ marginRight: 6 }} /> Ngày khởi tạo:{' '}
-                <Typography.Text strong style={{ fontSize: 13 }}>
+                <Typography.Text strong style={{ fontSize: 14 }}>
                   {user.createdAt
                     ? dayjs(user.createdAt).format('DD/MM/YYYY')
                     : '—'}
@@ -231,7 +223,7 @@ export function UserDetailPage() {
                   <Col xs={24} lg={9}>
                     <Card
                       title={
-                        <Typography.Text strong style={{ fontSize: 15 }}>
+                        <Typography.Text strong style={{ fontSize: 16 }}>
                           Thẻ căn cước hệ thống
                         </Typography.Text>
                       }
@@ -295,7 +287,7 @@ export function UserDetailPage() {
                 <Col xs={24} lg={!isNew ? 15 : 24}>
                   <Card
                     title={
-                      <Typography.Text strong style={{ fontSize: 15 }}>
+                      <Typography.Text strong style={{ fontSize: 16 }}>
                         {isNew
                           ? 'Thông tin người dùng mới'
                           : 'Chỉnh sửa thông tin'}

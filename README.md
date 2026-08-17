@@ -1,32 +1,47 @@
-# React + TypeScript + Vite
+# Base FE — Hệ Thống Quản Trị Enterprise (2026 Administrative Standard)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Enterprise-grade, responsive administration web dashboard ("Quản trị hệ thống") built with React 19, TypeScript 6, Vite 8, and Ant Design 6. Optimized for high contrast, legibility, and Facebook-inspired light theme standards.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features & Modules
 
-## React Compiler
+- **🎨 High-Contrast Design System**:
+  - Facebook Light Theme (`#0866ff` primary blue, `#f0f2f5` layout background, `#050505` high-contrast text).
+  - 15px-16px base typography scale for optimal legibility.
+  - 260px expanded navigation Sider.
+- **📊 Dashboard (`/`)**: System KPI metrics (`MetricCard`), recent activity feed, quick administration shortcuts, and live system status.
+- **👥 User Management (`/users`)**: Paginated user table, search/role filter, detail editor, account status toggle (`ActiveTag`), and `UserAvatar` display.
+- **🔍 Audit Logs (`/audit`)**: System traceability log, date range & category filters, IP tracking, risk level tags, and detailed JSON payload inspection drawer.
+- **⚙️ System Settings (`/settings`)**: General parameters, security policies (Session Timeout, 2FA, password min length), SMTP email config, and role permissions matrix.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## 🚀 Tech Stack
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+- **Core**: React 19, TypeScript 6, Vite 8
+- **UI & Icons**: Ant Design 6, @ant-design/icons
+- **State & Data Fetching**: TanStack React Query 5, Axios (with mock layer)
+- **Routing**: React Router 7
+- **Code Quality**: Oxlint, Prettier, Husky
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+---
+
+## 🛠️ Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start local dev server
+npm run dev
+
+# Run Oxlint linter
+npm run lint
+
+# Format code with Prettier
+npm run format
+
+# Production Build Check
+npm run build
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.

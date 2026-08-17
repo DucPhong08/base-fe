@@ -9,24 +9,27 @@ import {
   App,
   Tooltip,
   Space,
-  Avatar,
   Typography,
   Flex,
   Segmented,
+  Empty,
 } from 'antd';
 import {
   PlusOutlined,
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
-  UserOutlined,
   DownloadOutlined,
 } from '@ant-design/icons';
 import type { TablePaginationConfig } from 'antd';
 import dayjs from 'dayjs';
-import { PageContainer } from '../../../shared/ui/PageContainer';
-import { PageError } from '../../../shared/ui/PageError';
-import { ConfirmAction } from '../../../shared/ui/ConfirmAction';
+import {
+  PageContainer,
+  PageError,
+  ConfirmAction,
+  UserAvatar,
+  ActiveTag,
+} from '../../../shared/ui';
 import { useUsersQuery, useDeleteUserMutation } from '../queries';
 import type { User } from '../types';
 
@@ -128,38 +131,27 @@ export function UserListPage() {
     {
       title: 'Họ tên & Email',
       key: 'user_info',
-      render: (_: unknown, record: User) => {
-        const initials =
-          `${record.lastName?.[0] || ''}${record.firstName?.[0] || ''}`.toUpperCase() ||
-          'U';
-        return (
-          <Flex align="center" gap={12}>
-            <Avatar
-              size={34}
-              style={{
-                background: record.isActive ? '#0866ff' : '#9ca3af',
-                fontWeight: 600,
-                fontSize: 13,
-                flexShrink: 0,
-              }}
-              icon={!initials ? <UserOutlined /> : undefined}
+      render: (_: unknown, record: User) => (
+        <Flex align="center" gap={12}>
+          <UserAvatar
+            firstName={record.firstName}
+            lastName={record.lastName}
+            isActive={record.isActive}
+            size={34}
+          />
+          <div>
+            <Typography.Text
+              strong
+              style={{ display: 'block', lineHeight: 1.3, fontSize: 15 }}
             >
-              {initials}
-            </Avatar>
-            <div>
-              <Typography.Text
-                strong
-                style={{ display: 'block', lineHeight: 1.3 }}
-              >
-                {record.lastName} {record.firstName}
-              </Typography.Text>
-              <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                {record.email}
-              </Typography.Text>
-            </div>
-          </Flex>
-        );
-      },
+              {record.lastName} {record.firstName}
+            </Typography.Text>
+            <Typography.Text type="secondary" style={{ fontSize: 13 }}>
+              {record.email}
+            </Typography.Text>
+          </div>
+        </Flex>
+      ),
     },
     {
       title: 'Vai trò & Chức vụ',
@@ -172,11 +164,7 @@ export function UserListPage() {
       dataIndex: 'isActive',
       key: 'isActive',
       width: 140,
-      render: (isActive: boolean) => (
-        <Tag color={isActive ? 'success' : 'error'}>
-          {isActive ? 'Hoạt động' : 'Đã khóa'}
-        </Tag>
-      ),
+      render: (isActive: boolean) => <ActiveTag isActive={isActive} />,
     },
     {
       title: 'Ngày khởi tạo',
@@ -184,7 +172,7 @@ export function UserListPage() {
       key: 'createdAt',
       width: 150,
       render: (createdAt?: string) => (
-        <Typography.Text type="secondary" style={{ fontSize: 13 }}>
+        <Typography.Text type="secondary" style={{ fontSize: 14 }}>
           {createdAt ? dayjs(createdAt).format('DD/MM/YYYY') : '—'}
         </Typography.Text>
       ),
@@ -229,7 +217,7 @@ export function UserListPage() {
       title="Danh sách người dùng"
       subtitle="Quản lý hồ sơ tài khoản, phân quyền quản trị và trạng thái truy cập."
       extra={
-        <Flex gap={8}>
+        <Flex gap={10}>
           <Button
             icon={<DownloadOutlined />}
             onClick={() =>
@@ -296,7 +284,26 @@ export function UserListPage() {
             showTotal: (total) => `Hiển thị ${total} tài khoản`,
           }}
           onChange={handleTableChange}
-          locale={{ emptyText: 'Không tìm thấy tài khoản nào phù hợp' }}
+          locale={{
+            emptyText: (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={
+                  <div>
+                    <Typography.Text
+                      strong
+                      style={{ display: 'block', fontSize: 14 }}
+                    >
+                      Không tìm thấy tài khoản nào phù hợp
+                    </Typography.Text>
+                    <Typography.Text type="secondary" style={{ fontSize: 13 }}>
+                      Thử thay đổi từ khóa tìm kiếm hoặc bỏ lọc theo vai trò.
+                    </Typography.Text>
+                  </div>
+                }
+              />
+            ),
+          }}
           scroll={{ x: 720 }}
         />
       </Card>

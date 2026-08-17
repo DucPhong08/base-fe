@@ -41,6 +41,16 @@ const UserDetailPage = lazy(() =>
     default: m.UserDetailPage,
   })),
 );
+const AuditPage = lazy(() =>
+  import('../features/audit/pages/AuditPage').then((m) => ({
+    default: m.AuditPage,
+  })),
+);
+const SettingsPage = lazy(() =>
+  import('../features/settings/pages/SettingsPage').then((m) => ({
+    default: m.SettingsPage,
+  })),
+);
 
 function SuspenseWrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -122,6 +132,22 @@ export const router = createBrowserRouter([
         element: (
           <SuspenseWrapper>
             <UserDetailPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: 'audit',
+        element: (
+          <SuspenseWrapper>
+            <AuditPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: 'settings',
+        element: (
+          <SuspenseWrapper>
+            <SettingsPage />
           </SuspenseWrapper>
         ),
       },

@@ -15,7 +15,7 @@ export function PageContainer({
   children,
 }: PageContainerProps) {
   return (
-    <div className="page-animate">
+    <div className="page-fade-in">
       <Flex
         justify="space-between"
         align="flex-start"
@@ -24,7 +24,7 @@ export function PageContainer({
         style={{ marginBottom: 20 }}
       >
         <div>
-          <Typography.Title level={4} style={{ margin: 0 }}>
+          <Typography.Title level={4} style={{ margin: 0, fontWeight: 700 }}>
             {title}
           </Typography.Title>
           {subtitle && (
@@ -37,7 +37,7 @@ export function PageContainer({
           )}
         </div>
         {extra && (
-          <Flex gap={8} align="center">
+          <Flex gap={10} align="center">
             {extra}
           </Flex>
         )}

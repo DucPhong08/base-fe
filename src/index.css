@@ -1,4 +1,4 @@
-/* ===== Global Design System Styles (Facebook High-Contrast Light Theme) ===== */
+/* ===== Global Design System Styles (Facebook High-Contrast Light Theme — Purposeful Motion Pass) ===== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -25,7 +25,36 @@
   display: inline-block;
 }
 
-/* Table Polish */
+/* Subtle Page Fade-in Animation */
+.page-fade-in {
+  animation: appFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes appFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card & Interactive Element Purposeful Transitions */
+.ant-card {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.ant-card:hover {
+  border-color: #cbd5e1 !important;
+}
+
+:root[data-theme='dark'] .ant-card:hover {
+  border-color: #334155 !important;
+}
+
+/* Table Polish - Refined Harmonized Headers */
 .ant-table-wrapper {
   border-radius: 8px;
   overflow: hidden;
@@ -33,9 +62,38 @@
 
 .ant-table-thead > tr > th {
   font-weight: 600 !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   color: #050505 !important;
-  letter-spacing: 0.2px;
+  background-color: #f7f8fa !important;
+  border-bottom: 1px solid #e4e6eb !important;
+}
+
+:root[data-theme='dark'] .ant-table-thead > tr > th {
+  color: #f0f2f5 !important;
+  background-color: #1c2638 !important;
+  border-bottom: 1px solid #263347 !important;
+}
+
+/* Tag & Form Label Refined Styling */
+.ant-tag {
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  border-radius: 4px !important;
+  transition: all 0.15s ease !important;
+}
+
+.ant-form-item-label > label {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: #050505 !important;
+}
+
+:root[data-theme='dark'] .ant-form-item-label > label {
+  color: #f0f2f5 !important;
+}
+
+.ant-segmented-item-selected {
+  font-weight: 600 !important;
 }
 
 /* Custom Scrollbar */
@@ -73,6 +131,7 @@ body {
   inset: 0;
   z-index: 99;
   background: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.2s ease;
 }
 
 ::selection {

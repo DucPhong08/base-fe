@@ -5,6 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ColorModeContext, getAppTheme, type ColorMode } from './theme';
 import { queryClient } from './query-client';
 import { AuthProvider } from '../features/auth/auth-provider';
+import { ErrorBoundary } from '../shared/ui';
 import { AppRouter } from './router';
 
 export function AppProviders() {
@@ -33,16 +34,18 @@ export function AppProviders() {
   );
 
   return (
-    <ColorModeContext.Provider value={colorModeContext}>
-      <ConfigProvider theme={getAppTheme(colorMode)} locale={viVN}>
-        <App>
-          <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-              <AppRouter />
-            </AuthProvider>
-          </QueryClientProvider>
-        </App>
-      </ConfigProvider>
-    </ColorModeContext.Provider>
+    <ErrorBoundary>
+      <ColorModeContext.Provider value={colorModeContext}>
+        <ConfigProvider theme={getAppTheme(colorMode)} locale={viVN}>
+          <App>
+            <QueryClientProvider client={queryClient}>
+              <AuthProvider>
+                <AppRouter />
+              </AuthProvider>
+            </QueryClientProvider>
+          </App>
+        </ConfigProvider>
+      </ColorModeContext.Provider>
+    </ErrorBoundary>
   );
 }
