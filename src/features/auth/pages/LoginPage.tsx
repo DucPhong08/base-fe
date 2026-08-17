@@ -1,6 +1,11 @@
 import { useCallback, useState } from 'react';
-import { Form, Input, Button, App } from 'antd';
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { Form, Input, Button, App, Typography, Divider } from 'antd';
+import {
+  LockOutlined,
+  MailOutlined,
+  ArrowRightOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth-provider';
 import type { LoginCredentials } from '../types';
@@ -12,6 +17,7 @@ export function LoginPage() {
   const location = useLocation();
   const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
 
   const from =
     (location.state as { from?: { pathname: string } })?.from?.pathname || '/';
@@ -24,7 +30,9 @@ export function LoginPage() {
         navigate(from, { replace: true });
       } catch (err) {
         const msg =
-          err instanceof ApiError ? err.message : 'Đăng nhập thất bại';
+          err instanceof ApiError
+            ? err.message
+            : 'Đăng nhập thất bại. Vui lòng kiểm tra lại email & mật khẩu';
         message.error(msg);
       } finally {
         setLoading(false);
@@ -33,39 +41,101 @@ export function LoginPage() {
     [login, navigate, from, message],
   );
 
+  const fillQuickAdmin = () => {
+    form.setFieldsValue({
+      email: 'admin.phong@quantri.gov.vn',
+      password: 'AdminPassword123!',
+    });
+  };
+
   return (
-    <Form layout="vertical" onFinish={handleSubmit} autoComplete="off">
-      <Form.Item
-        name="email"
-        rules={[
-          { required: true, message: 'Vui lòng nhập email' },
-          { type: 'email', message: 'Email không hợp lệ' },
-        ]}
+    <div>
+      <Typography.Title
+        level={4}
+        style={{ marginTop: 0, marginBottom: 6, fontWeight: 600 }}
       >
-        <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: 'Vui lòng nhập mật khẩu' }]}
+        Đăng nhập hệ thống
+      </Typography.Title>
+      <Typography.Paragraph
+        type="secondary"
+        style={{ fontSize: 13, marginBottom: 20 }}
       >
-        <Input.Password
-          prefix={<LockOutlined />}
-          placeholder="Mật khẩu"
-          size="large"
-        />
-      </Form.Item>
-      <Form.Item style={{ marginBottom: 0 }}>
-        <Button
-          type="primary"
-          htmlType="submit"
-          loading={loading}
-          block
-          size="large"
-          style={{ height: 44, fontWeight: 500 }}
+        Nhập thông tin tài khoản được cấp bởi đơn vị quản trị.
+      </Typography.Paragraph>
+
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        autoComplete="off"
+      >
+        <Form.Item
+          name="email"
+          label={
+            <Typography.Text strong style={{ fontSize: 13 }}>
+              Địa chỉ Email
+            </Typography.Text>
+          }
+          rules={[
+            { required: true, message: 'Vui lòng nhập địa chỉ email' },
+            { type: 'email', message: 'Email không đúng định dạng' },
+          ]}
         >
-          Đăng nhập
+          <Input
+            prefix={<MailOutlined style={{ color: '#94a3b8' }} />}
+            placeholder="admin.phong@quantri.gov.vn"
+            size="large"
+            style={{ borderRadius: 8 }}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="password"
+          label={
+            <Typography.Text strong style={{ fontSize: 13 }}>
+              Mật khẩu truy cập
+            </Typography.Text>
+          }
+          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu' }]}
+        >
+          <Input.Password
+            prefix={<LockOutlined style={{ color: '#94a3b8' }} />}
+            placeholder="••••••••"
+            size="large"
+            style={{ borderRadius: 8 }}
+          />
+        </Form.Item>
+
+        <Form.Item style={{ marginBottom: 16, marginTop: 8 }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            block
+            size="large"
+            style={{ height: 42, fontWeight: 600, borderRadius: 8 }}
+            icon={<ArrowRightOutlined />}
+          >
+            Đăng nhập ngay
+          </Button>
+        </Form.Item>
+      </Form>
+
+      <Divider style={{ margin: '16px 0', fontSize: 12 }}>
+        Chế độ thử nghiệm phát triển
+      </Divider>
+
+      <div style={{ textAlign: 'center' }}>
+        <Button
+          type="dashed"
+          size="small"
+          icon={<UserOutlined />}
+          onClick={fillQuickAdmin}
+          style={{ borderRadius: 6 }}
+        >
+          Điền nhanh tài khoản Admin
         </Button>
-      </Form.Item>
-    </Form>
+      </div>
+    </div>
   );
 }

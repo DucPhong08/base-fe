@@ -22,44 +22,55 @@ export function useColorMode(): ColorModeContextValue {
 }
 
 export function getAppTheme(colorMode: ColorMode): ThemeConfig {
+  const isDark = colorMode === 'dark';
+
   return {
-    algorithm:
-      colorMode === 'dark'
-        ? antdTheme.darkAlgorithm
-        : antdTheme.defaultAlgorithm,
+    algorithm: isDark ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
     token: {
-      colorPrimary: '#1677ff',
+      colorPrimary: '#2563eb', // Royal Indigo Blue
+      colorPrimaryHover: '#3b82f6',
+      colorPrimaryActive: '#1d4ed8',
       borderRadius: 8,
-      fontSize: 15,
-      controlHeight: 40,
-      colorBgLayout: colorMode === 'dark' ? '#0f1115' : '#f5f7fa',
+      fontSize: 14,
+      controlHeight: 38,
+      colorBgLayout: isDark ? '#090d16' : '#f8fafc',
+      colorBgContainer: isDark ? '#111827' : '#ffffff',
+      colorBorderSecondary: isDark ? '#1f293d' : '#e2e8f0',
+      colorText: isDark ? '#f3f4f6' : '#0f172a',
+      colorTextSecondary: isDark ? '#9ca3af' : '#64748b',
       fontFamily:
-        "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+        "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     },
     components: {
       Table: {
-        cellPaddingBlock: 13,
+        cellPaddingBlock: 12,
         cellPaddingInline: 16,
+        headerBg: isDark ? '#1a2333' : '#f1f5f9',
+        headerColor: isDark ? '#e5e7eb' : '#334155',
         headerBorderRadius: 8,
+        rowHoverBg: isDark ? '#1a2333' : '#f8fafc',
       },
       Card: {
         borderRadiusLG: 10,
+        colorBgContainer: isDark ? '#111827' : '#ffffff',
       },
       Button: {
         fontWeight: 500,
+        borderRadius: 6,
       },
       Menu: {
         darkItemBg: 'transparent',
         darkSubMenuItemBg: 'transparent',
-        darkItemSelectedBg: 'rgba(22,119,255,0.25)',
-        darkItemHoverBg: 'rgba(255,255,255,0.08)',
-        itemBorderRadius: 8,
+        darkItemSelectedBg: 'rgba(37, 99, 235, 0.2)',
+        darkItemSelectedColor: '#60a5fa',
+        darkItemHoverBg: 'rgba(255, 255, 255, 0.05)',
+        itemBorderRadius: 6,
         itemMarginInline: 8,
-        iconMarginInlineEnd: 12,
+        iconMarginInlineEnd: 10,
       },
       Breadcrumb: {
-        fontSize: 14,
-        separatorMargin: 8,
+        fontSize: 13,
+        separatorMargin: 6,
       },
       Tag: {
         borderRadiusSM: 4,

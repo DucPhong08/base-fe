@@ -11,6 +11,9 @@ import {
   Avatar,
   Grid,
   Tooltip,
+  Badge,
+  Popover,
+  List,
   theme,
 } from 'antd';
 import {
@@ -22,10 +25,14 @@ import {
   TeamOutlined,
   MoonOutlined,
   SunOutlined,
+  BellOutlined,
+  SafetyCertificateOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { useAuth } from '../features/auth/auth-provider';
 import { useColorMode } from '../app/theme';
+import { MOCK_NOTIFICATIONS, type SystemNotification } from '../shared/mocks';
 
 const { Header, Sider, Content } = Layout;
 
@@ -39,7 +46,7 @@ function useMenuItems(): MenuProps['items'] {
     {
       key: '/',
       icon: <DashboardOutlined />,
-      label: 'Tổng quan',
+      label: 'Tổng quan điều hành',
     },
   ];
 
@@ -47,9 +54,23 @@ function useMenuItems(): MenuProps['items'] {
     items.push({
       key: '/users',
       icon: <TeamOutlined />,
-      label: 'Người dùng',
+      label: 'Quản lý người dùng',
     });
   }
+
+  items.push({
+    key: '/audit',
+    icon: <SafetyCertificateOutlined />,
+    label: 'Nhật ký truy vết',
+    disabled: true,
+  });
+
+  items.push({
+    key: '/settings',
+    icon: <SettingOutlined />,
+    label: 'Cấu hình hệ thống',
+    disabled: true,
+  });
 
   return items;
 }
@@ -60,7 +81,8 @@ function useBreadcrumbItems() {
   const segments = location.pathname.split('/').filter(Boolean);
 
   const breadcrumbMap: Record<string, string> = {
-    users: 'Người dùng',
+    users: 'Quản lý người dùng',
+    new: 'Thêm mới',
   };
 
   const items = [{ title: 'Trang chủ' }];
@@ -88,18 +110,19 @@ export function AppLayout() {
     if (isMobile) setCollapsed(true);
   };
 
+  const notifications = MOCK_NOTIFICATIONS;
+
   const userMenuItems: MenuProps['items'] = [
     {
       key: 'user-info',
       label: (
-        <div style={{ padding: '4px 0' }}>
-          <Typography.Text strong>
-            {user?.firstName} {user?.lastName}
+        <div style={{ padding: '6px 4px' }}>
+          <Typography.Text strong style={{ display: 'block' }}>
+            {user?.lastName} {user?.firstName}
           </Typography.Text>
-          <br />
           <Typography.Text
             type="secondary"
-            style={{ fontSize: token.fontSizeSM }}
+            style={{ fontSize: 12, display: 'block' }}
           >
             {user?.email}
           </Typography.Text>
@@ -111,7 +134,7 @@ export function AppLayout() {
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: 'Đăng xuất',
+      label: 'Đăng xuất tài khoản',
       danger: true,
     },
   ];
@@ -130,6 +153,7 @@ export function AppLayout() {
         trigger={null}
         collapsible
         collapsed={collapsed}
+        width={230}
         collapsedWidth={isMobile ? 0 : 80}
         breakpoint="lg"
         onBreakpoint={(broken) => setCollapsed(broken)}
@@ -139,53 +163,66 @@ export function AppLayout() {
           top: 0,
           bottom: 0,
           zIndex: 100,
-          background: 'linear-gradient(180deg, #001529 0%, #002140 100%)',
+          background: '#0b1120',
+          borderRight: '1px solid rgba(255, 255, 255, 0.07)',
           overflow: 'auto',
         }}
       >
-        {/* Logo */}
+        {/* Logo Header */}
         <div
           style={{
             height: 64,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            gap: 10,
-            padding: '0 16px',
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            gap: 12,
+            padding: '0 18px',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.07)',
             transition: 'all 0.2s ease',
           }}
         >
           <div
             style={{
-              width: 32,
-              height: 32,
+              width: 36,
+              height: 36,
               borderRadius: 8,
-              background: `linear-gradient(135deg, ${token.colorPrimary}, ${token.colorPrimaryActive})`,
+              background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 16,
               fontWeight: 700,
-              color: '#fff',
+              color: '#ffffff',
               flexShrink: 0,
+              boxShadow: '0 2px 10px rgba(37, 99, 235, 0.35)',
             }}
           >
             QT
           </div>
           {!collapsed && (
-            <Typography.Text
-              strong
-              style={{
-                color: '#fff',
-                fontSize: 15,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                animation: 'fadeIn 0.3s ease',
-              }}
-            >
-              {SYSTEM_NAME}
-            </Typography.Text>
+            <div style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
+              <Typography.Text
+                strong
+                style={{
+                  color: '#f8fafc',
+                  fontSize: 15,
+                  display: 'block',
+                  lineHeight: 1.2,
+                }}
+              >
+                {SYSTEM_NAME}
+              </Typography.Text>
+              <Typography.Text
+                style={{
+                  color: '#64748b',
+                  fontSize: 11,
+                  display: 'block',
+                  fontWeight: 500,
+                }}
+              >
+                Cổng Điều Hành Enterprise
+              </Typography.Text>
+            </div>
           )}
         </div>
 
@@ -195,7 +232,7 @@ export function AppLayout() {
           selectedKeys={[selectedKey]}
           items={menuItems}
           onClick={handleMenuClick}
-          style={{ background: 'transparent', borderRight: 0, marginTop: 8 }}
+          style={{ background: 'transparent', borderRight: 0, marginTop: 12 }}
         />
       </Sider>
 
@@ -209,7 +246,7 @@ export function AppLayout() {
 
       <Layout
         style={{
-          marginLeft: isMobile ? 0 : collapsed ? 80 : 200,
+          marginLeft: isMobile ? 0 : collapsed ? 80 : 230,
           transition: 'margin-left 0.2s ease',
         }}
       >
@@ -224,7 +261,7 @@ export function AppLayout() {
             position: 'sticky',
             top: 0,
             zIndex: 99,
-            boxShadow: token.boxShadowTertiary,
+            boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.03)',
           }}
         >
           <Flex align="center" gap={isMobile ? 8 : 16} style={{ minWidth: 0 }}>
@@ -238,7 +275,77 @@ export function AppLayout() {
             <Breadcrumb className="app-breadcrumb" items={breadcrumbItems} />
           </Flex>
 
-          <Flex align="center" gap={4}>
+          <Flex align="center" gap={10}>
+            {/* System Live Status — subtle inline text */}
+            {!isMobile && (
+              <Flex
+                align="center"
+                gap={6}
+                style={{
+                  fontSize: 12,
+                  fontWeight: 500,
+                  color: colorMode === 'dark' ? '#34d399' : '#059669',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <span className="status-pulse-dot" />
+                Hệ thống sẵn sàng
+              </Flex>
+            )}
+
+            {/* Notification Popover */}
+            <Popover
+              content={
+                <div style={{ width: 280 }}>
+                  <Typography.Text
+                    strong
+                    style={{ display: 'block', marginBottom: 8 }}
+                  >
+                    Thông báo mới
+                  </Typography.Text>
+                  <List
+                    size="small"
+                    dataSource={notifications}
+                    renderItem={(item: SystemNotification) => (
+                      <List.Item key={item.id} style={{ padding: '8px 0' }}>
+                        <List.Item.Meta
+                          title={
+                            <Typography.Text
+                              style={{
+                                fontSize: 13,
+                                fontWeight: item.read ? 400 : 600,
+                              }}
+                            >
+                              {item.title}
+                            </Typography.Text>
+                          }
+                          description={
+                            <Typography.Text
+                              type="secondary"
+                              style={{ fontSize: 11 }}
+                            >
+                              {item.time}
+                            </Typography.Text>
+                          }
+                        />
+                      </List.Item>
+                    )}
+                  />
+                </div>
+              }
+              trigger="click"
+              placement="bottomRight"
+            >
+              <Badge count={2} size="small" offset={[-2, 4]}>
+                <Button
+                  type="text"
+                  icon={<BellOutlined />}
+                  style={{ fontSize: 16 }}
+                />
+              </Badge>
+            </Popover>
+
+            {/* Theme Toggle */}
             <Tooltip
               title={
                 colorMode === 'dark'
@@ -258,6 +365,7 @@ export function AppLayout() {
               />
             </Tooltip>
 
+            {/* User Dropdown Menu */}
             <Dropdown
               menu={{ items: userMenuItems, onClick: handleUserMenuClick }}
               placement="bottomRight"
@@ -282,16 +390,18 @@ export function AppLayout() {
                 <Avatar
                   size={32}
                   style={{
-                    background: `linear-gradient(135deg, ${token.colorPrimary}, ${token.colorPrimaryActive})`,
+                    background:
+                      'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                    fontWeight: 600,
                   }}
                   icon={<UserOutlined />}
                 />
                 <Typography.Text
                   className="app-header-user-name"
                   ellipsis
-                  style={{ maxWidth: 120 }}
+                  style={{ maxWidth: 160, fontWeight: 500 }}
                 >
-                  {user?.firstName} {user?.lastName}
+                  {user?.lastName} {user?.firstName}
                 </Typography.Text>
               </Flex>
             </Dropdown>

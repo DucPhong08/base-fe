@@ -1,5 +1,9 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from 'react-router-dom';
 import { Spin } from 'antd';
 import { AppLayout } from '../layouts/AppLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
@@ -129,3 +133,7 @@ export const router = createBrowserRouter([
     element: <Navigate to="/404" replace />,
   },
 ]);
+
+export function AppRouter() {
+  return <RouterProvider router={router} />;
+}

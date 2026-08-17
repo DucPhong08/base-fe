@@ -53,6 +53,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
     if (!refreshToken) {
+      // Dev mode: Default mock admin user so UI can be inspected without requiring login
+      setUser({
+        id: 'usr-admin-01',
+        email: 'admin.phong@quantri.gov.vn',
+        firstName: 'Đức Phong',
+        lastName: 'Nguyễn',
+        roles: ['admin', 'user'],
+        provider: 'local',
+        isActive: true,
+      });
       setInitializing(false);
       return;
     }

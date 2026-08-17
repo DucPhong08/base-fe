@@ -1,11 +1,16 @@
 import { Outlet } from 'react-router-dom';
-import { Button, Layout, Tooltip, Typography, theme } from 'antd';
-import { MoonOutlined, SunOutlined } from '@ant-design/icons';
+import { Button, Layout, Tooltip, Typography, theme, Flex } from 'antd';
+import {
+  MoonOutlined,
+  SunOutlined,
+  SafetyCertificateOutlined,
+} from '@ant-design/icons';
 import { useColorMode } from '../app/theme';
 
 export function AuthLayout() {
   const { token } = theme.useToken();
   const { colorMode, toggleColorMode } = useColorMode();
+  const isDark = colorMode === 'dark';
 
   return (
     <Layout
@@ -14,35 +19,33 @@ export function AuthLayout() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: `linear-gradient(135deg, ${token.colorBgLayout} 0%, ${token.colorPrimaryBg} 50%, ${token.colorBgContainer} 100%)`,
+        background: isDark
+          ? 'radial-gradient(ellipse at top, #0f172a 0%, #090d16 100%)'
+          : 'radial-gradient(ellipse at top, #eff6ff 0%, #f8fafc 100%)',
         position: 'relative',
         overflow: 'auto',
-        padding: '32px 0',
+        padding: '32px 16px',
         boxSizing: 'border-box',
       }}
     >
       <Tooltip
         title={
-          colorMode === 'dark'
-            ? 'Chuyển sang giao diện sáng'
-            : 'Chuyển sang giao diện tối'
+          isDark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối'
         }
       >
         <Button
           type="text"
           shape="circle"
-          icon={colorMode === 'dark' ? <SunOutlined /> : <MoonOutlined />}
+          icon={isDark ? <SunOutlined /> : <MoonOutlined />}
           onClick={toggleColorMode}
           aria-label={
-            colorMode === 'dark'
-              ? 'Chuyển sang giao diện sáng'
-              : 'Chuyển sang giao diện tối'
+            isDark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối'
           }
-          style={{ position: 'absolute', top: 16, right: 16, zIndex: 2 }}
+          style={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}
         />
       </Tooltip>
 
-      {/* Decorative circles */}
+      {/* Modern Background Blur Elements */}
       <div
         style={{
           position: 'absolute',
@@ -54,22 +57,24 @@ export function AuthLayout() {
         <div
           style={{
             position: 'absolute',
-            width: 400,
-            height: 400,
+            width: 500,
+            height: 500,
             borderRadius: '50%',
-            background: `radial-gradient(circle, ${token.colorPrimary}10, transparent 70%)`,
-            top: -100,
+            background:
+              'radial-gradient(circle, rgba(37, 99, 235, 0.12), transparent 70%)',
+            top: -150,
             right: -100,
           }}
         />
         <div
           style={{
             position: 'absolute',
-            width: 300,
-            height: 300,
+            width: 400,
+            height: 400,
             borderRadius: '50%',
-            background: `radial-gradient(circle, ${token.colorPrimary}08, transparent 70%)`,
-            bottom: -50,
+            background:
+              'radial-gradient(circle, rgba(16, 185, 129, 0.08), transparent 70%)',
+            bottom: -100,
             left: -50,
           }}
         />
@@ -80,58 +85,66 @@ export function AuthLayout() {
           position: 'relative',
           zIndex: 1,
           width: '100%',
-          maxWidth: 420,
-          padding: '0 16px',
+          maxWidth: 440,
           boxSizing: 'border-box',
         }}
       >
-        {/* Logo area */}
+        {/* Brand Header */}
         <div
           style={{
             textAlign: 'center',
-            marginBottom: 32,
-            animation: 'fadeInUp 0.5s ease-out',
+            marginBottom: 28,
+            animation: 'fadeInUp 0.4s ease-out',
           }}
         >
-          <div
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 16,
-              background: `linear-gradient(135deg, ${token.colorPrimary}, ${token.colorPrimaryActive})`,
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 24,
-              fontWeight: 700,
-              color: '#fff',
-              marginBottom: 16,
-              boxShadow: `0 8px 24px ${token.colorPrimary}40`,
-            }}
-          >
-            QT
-          </div>
-          <Typography.Title level={3} style={{ margin: 0 }}>
-            Quản trị hệ thống
+          <Flex justify="center" align="center" style={{ marginBottom: 16 }}>
+            <div
+              style={{
+                width: 52,
+                height: 52,
+                borderRadius: 12,
+                background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 22,
+                fontWeight: 700,
+                color: '#ffffff',
+                boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)',
+              }}
+            >
+              QT
+            </div>
+          </Flex>
+          <Typography.Title level={3} style={{ margin: 0, fontWeight: 700 }}>
+            Hệ Thống Quản Trị Enterprise
           </Typography.Title>
-          <Typography.Text type="secondary">
-            Đăng nhập để tiếp tục
+          <Typography.Text type="secondary" style={{ fontSize: 14 }}>
+            Cổng xác thực & phân quyền quản lý tập trung
           </Typography.Text>
         </div>
 
-        {/* Form card */}
+        {/* Card Form */}
         <div
           style={{
             background: token.colorBgContainer,
-            padding: 'clamp(24px, 5vw, 32px)',
-            borderRadius: 12,
+            padding: '32px 28px',
+            borderRadius: 14,
             border: `1px solid ${token.colorBorderSecondary}`,
-            boxShadow: token.boxShadowSecondary,
-            animation: 'fadeInUp 0.5s ease-out 0.1s both',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.06)',
+            animation: 'fadeInUp 0.4s ease-out 0.1s both',
           }}
         >
           <Outlet />
         </div>
+
+        {/* Footer info */}
+        <Flex justify="center" align="center" gap={8} style={{ marginTop: 24 }}>
+          <SafetyCertificateOutlined style={{ color: '#10b981' }} />
+          <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+            Bảo mật mã hóa kết nối SSL 256-bit — 2026 Base FE
+          </Typography.Text>
+        </Flex>
       </div>
     </Layout>
   );
