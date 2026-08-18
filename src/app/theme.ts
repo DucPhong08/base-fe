@@ -32,11 +32,11 @@ export function getAppTheme(colorMode: ColorMode): ThemeConfig {
       colorWarning: '#d97706',
       colorError: '#fa383e',
       colorInfo: '#0866ff',
-      borderRadius: 6,
-      fontSize: 15, // Raised global base font size (+1px) for legibility
-      lineHeight: 1.55, // Optimized reading line height
-      controlHeight: 40, // Slightly taller controls for easier clicking
-      colorBgLayout: isDark ? '#0b0f19' : '#f0f2f5',
+      borderRadius: 8,
+      fontSize: 16, // Scaled global base font size to 16px for crisp legibility
+      lineHeight: 1.55,
+      controlHeight: 44, // Taller controls for easy clicking and modern feel
+      colorBgLayout: isDark ? '#0b0f19' : '#f4f6f8',
       colorBgContainer: isDark ? '#151d2a' : '#ffffff',
       colorBorderSecondary: isDark ? '#263347' : '#e4e6eb',
       colorText: isDark ? '#f0f2f5' : '#050505',
@@ -46,36 +46,39 @@ export function getAppTheme(colorMode: ColorMode): ThemeConfig {
     },
     components: {
       Table: {
-        cellPaddingBlock: 14,
-        cellPaddingInline: 18,
-        headerBg: isDark ? '#1c2638' : '#f7f8fa',
+        cellPaddingBlock: 16,
+        cellPaddingInline: 20,
+        headerBg: isDark ? '#1c2638' : '#f8fafc',
         headerColor: isDark ? '#f0f2f5' : '#050505',
-        headerBorderRadius: 6,
-        rowHoverBg: isDark ? '#1c2638' : '#f2f4f7',
+        headerBorderRadius: 8,
+        rowHoverBg: isDark ? '#1c2638' : '#f0f4f9',
         fontSize: 15,
       },
       Card: {
-        borderRadiusLG: 8,
+        borderRadiusLG: 10,
       },
       Button: {
         fontWeight: 600,
         fontSizeLG: 16,
+        controlHeightLG: 46,
       },
       Menu: {
-        fontSize: 15,
-        itemColor: isDark ? '#cbd5e1' : '#050505',
-        itemSelectedColor: '#ffffff',
-        itemSelectedBg: '#0866ff',
+        fontSize: 16,
+        itemColor: isDark ? '#cbd5e1' : '#334155',
+        itemSelectedColor: isDark ? '#ffffff' : '#0866ff',
+        itemSelectedBg: isDark ? '#0866ff' : '#e7f1ff',
+        itemHoverBg: isDark ? 'rgba(255, 255, 255, 0.12)' : '#f1f5f9',
+        itemHoverColor: '#0866ff',
         darkItemBg: 'transparent',
-        darkItemColor: '#e2e8f0',
+        darkItemColor: '#cbd5e1',
         darkSubMenuItemBg: 'transparent',
         darkItemSelectedBg: '#0866ff',
         darkItemSelectedColor: '#ffffff',
         darkItemHoverBg: 'rgba(255, 255, 255, 0.12)',
-        itemBorderRadius: 6,
-        itemMarginInline: 10,
-        iconMarginInlineEnd: 12,
-        iconSize: 18,
+        itemBorderRadius: 8,
+        itemMarginInline: 12,
+        iconMarginInlineEnd: 14,
+        iconSize: 20,
       },
       Breadcrumb: {
         fontSize: 14,
@@ -84,16 +87,16 @@ export function getAppTheme(colorMode: ColorMode): ThemeConfig {
         lastItemColor: isDark ? '#f0f2f5' : '#050505',
       },
       Tag: {
-        borderRadiusSM: 4,
+        borderRadiusSM: 6,
         fontSize: 13,
       },
       Descriptions: {
-        titleMarginBottom: 12,
-        labelBg: isDark ? '#1c2638' : '#f7f8fa',
+        titleMarginBottom: 14,
+        labelBg: isDark ? '#1c2638' : '#f8fafc',
         fontSize: 15,
       },
       Modal: {
-        borderRadiusLG: 8,
+        borderRadiusLG: 10,
       },
       Typography: {
         titleMarginBottom: 0,

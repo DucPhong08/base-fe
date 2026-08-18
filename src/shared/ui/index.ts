@@ -8,3 +8,5 @@ export * from './UserAvatar';
 export * from './ActiveTag';
 export * from './MetricCard';
 export * from './ErrorBoundary';
+export * from './DataTable';
+export * from './DetailCard';

@@ -1,9 +1,9 @@
-/* ===== Global Design System Styles (Facebook High-Contrast Light Theme — Purposeful Motion Pass) ===== */
+/* ===== Global Design System Styles (Clean Bright Theme — Turnkey FE Base) ===== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --app-bg-layout: #f0f2f5;
+  --app-bg-layout: #f4f6f8;
   --app-border-color: #e4e6eb;
   --app-scrollbar-thumb: rgba(140, 147, 157, 0.4);
   --app-scrollbar-thumb-hover: rgba(100, 107, 117, 0.6);
@@ -18,22 +18,23 @@
 
 /* Status indicator dot */
 .status-pulse-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background-color: #31a24c;
   display: inline-block;
+  box-shadow: 0 0 0 3px rgba(49, 162, 76, 0.2);
 }
 
-/* Subtle Page Fade-in Animation */
+/* Page Fade-in Animation */
 .page-fade-in {
-  animation: appFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: appFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes appFadeIn {
   from {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -41,50 +42,78 @@
   }
 }
 
-/* Card & Interactive Element Purposeful Transitions */
+/* Card Hover micro-interactions */
 .ant-card {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .ant-card:hover {
   border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
 }
 
 :root[data-theme='dark'] .ant-card:hover {
   border-color: #334155 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Table Polish - Refined Harmonized Headers */
+/* Button Rich Hover States */
+.ant-btn {
+  transition: all 0.2s ease !important;
+}
+
+.ant-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(8, 102, 255, 0.3) !important;
+}
+
+/* Table Polish - Bright Crisp Headers & Row Hovering */
 .ant-table-wrapper {
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
 .ant-table-thead > tr > th {
-  font-weight: 600 !important;
-  font-size: 14px !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
   color: #050505 !important;
-  background-color: #f7f8fa !important;
-  border-bottom: 1px solid #e4e6eb !important;
+  background-color: #f8fafc !important;
+  border-bottom: 2px solid #e4e6eb !important;
 }
 
 :root[data-theme='dark'] .ant-table-thead > tr > th {
   color: #f0f2f5 !important;
   background-color: #1c2638 !important;
-  border-bottom: 1px solid #263347 !important;
+  border-bottom: 2px solid #263347 !important;
 }
 
-/* Tag & Form Label Refined Styling */
+.ant-table-tbody > tr {
+  transition: background-color 0.2s ease !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #f0f4f9 !important;
+}
+
+:root[data-theme='dark'] .ant-table-tbody > tr:hover > td {
+  background-color: #1c2638 !important;
+}
+
+/* Tag & Badge Hover */
 .ant-tag {
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 13px !important;
-  border-radius: 4px !important;
+  padding: 3px 10px !important;
   transition: all 0.15s ease !important;
+}
+
+.ant-tag:hover {
+  transform: translateY(-1px);
 }
 
 .ant-form-item-label > label {
   font-weight: 600 !important;
-  font-size: 14px !important;
+  font-size: 15px !important;
   color: #050505 !important;
 }
 
@@ -92,8 +121,8 @@
   color: #f0f2f5 !important;
 }
 
-.ant-segmented-item-selected {
-  font-weight: 600 !important;
+.ant-menu-item-selected {
+  font-weight: 700 !important;
 }
 
 /* Custom Scrollbar */
@@ -122,6 +151,7 @@ body {
   background: var(--app-bg-layout);
   color: #050505;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

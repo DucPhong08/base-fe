@@ -32,7 +32,16 @@ import {
 import type { MenuProps } from 'antd';
 import { useAuth } from '../features/auth/auth-provider';
 import { useColorMode } from '../app/theme';
-import { MOCK_NOTIFICATIONS, type SystemNotification } from '../shared/mocks';
+
+export interface SystemNotification {
+  id: string;
+  title: string;
+  description: string;
+  time: string;
+  unread?: boolean;
+  read?: boolean;
+  type?: 'info' | 'warning' | 'success';
+}
 
 const { Header, Sider, Content } = Layout;
 
@@ -110,7 +119,7 @@ export function AppLayout() {
     if (isMobile) setCollapsed(true);
   };
 
-  const notifications = MOCK_NOTIFICATIONS;
+  const notifications: SystemNotification[] = [];
 
   const userMenuItems: MenuProps['items'] = [
     {
@@ -153,7 +162,7 @@ export function AppLayout() {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        width={260}
+        width={280}
         collapsedWidth={isMobile ? 0 : 80}
         breakpoint="lg"
         onBreakpoint={(broken) => setCollapsed(broken)}
@@ -163,8 +172,8 @@ export function AppLayout() {
           top: 0,
           bottom: 0,
           zIndex: 100,
-          background: '#0b1120',
-          borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+          background: token.colorBgContainer,
+          borderRight: `1px solid ${token.colorBorderSecondary}`,
           overflow: 'auto',
         }}
       >
@@ -177,20 +186,20 @@ export function AppLayout() {
             justifyContent: collapsed ? 'center' : 'flex-start',
             gap: 12,
             padding: '0 20px',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: `1px solid ${token.colorBorderSecondary}`,
             transition: 'all 0.2s ease',
           }}
         >
           <div
             style={{
-              width: 38,
-              height: 38,
+              width: 40,
+              height: 40,
               borderRadius: 8,
               background: '#0866ff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: 700,
               color: '#ffffff',
               flexShrink: 0,
@@ -203,7 +212,7 @@ export function AppLayout() {
               <Typography.Text
                 strong
                 style={{
-                  color: '#ffffff',
+                  color: token.colorText,
                   fontSize: 16,
                   display: 'block',
                   lineHeight: 1.2,
@@ -214,7 +223,7 @@ export function AppLayout() {
               </Typography.Text>
               <Typography.Text
                 style={{
-                  color: '#94a3b8',
+                  color: token.colorTextSecondary,
                   fontSize: 12,
                   display: 'block',
                   fontWeight: 500,
@@ -227,7 +236,6 @@ export function AppLayout() {
         </div>
 
         <Menu
-          theme="dark"
           mode="inline"
           selectedKeys={[selectedKey]}
           items={menuItems}
@@ -251,8 +259,9 @@ export function AppLayout() {
 
       <Layout
         style={{
-          marginLeft: isMobile ? 0 : collapsed ? 80 : 260,
-          transition: 'margin-left 0.2s ease',
+          marginLeft: isMobile ? 0 : collapsed ? 80 : 280,
+          transition: 'margin-left 0.2s cubic-bezier(0.2, 0, 0, 1)',
+          willChange: 'margin-left',
         }}
       >
         <Header

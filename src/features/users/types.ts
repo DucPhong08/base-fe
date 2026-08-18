@@ -43,4 +43,5 @@ export interface UserListParams {
   page: number;
   limit: number;
   condition?: string;
+  [key: string]: unknown;
 }

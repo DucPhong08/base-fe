@@ -22,17 +22,33 @@ import {
   SaveOutlined,
 } from '@ant-design/icons';
 import { PageContainer } from '../../../shared/ui';
+import { settingApi } from '../api/setting-api';
 
 export function SettingsPage() {
   const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
 
-  const handleSave = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const values = await form.validateFields();
+      await settingApi.updateValueByKey('SYSTEM_CONFIG', values);
       message.success('Đã lưu cấu hình hệ thống thành công');
-    }, 600);
+    } catch (err: unknown) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'message' in err &&
+        (err as { message: string }).message
+      ) {
+        message.error(String((err as { message: string }).message));
+      } else {
+        message.error('Không thể kết nối đến máy chủ để lưu cấu hình');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const roleMatrixColumns = [
@@ -122,27 +138,35 @@ export function SettingsPage() {
         </Button>
       }
     >
-      <Tabs
-        defaultActiveKey="general"
-        type="card"
-        items={[
-          {
-            key: 'general',
-            label: (
-              <span>
-                <SettingOutlined /> Cấu hình chung
-              </span>
-            ),
-            children: (
-              <Card>
-                <Form
-                  layout="vertical"
-                  initialValues={{
-                    appName: 'Quản trị hệ thống Enterprise',
-                    maintenance: false,
-                    ssoSync: true,
-                  }}
-                >
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={{
+          appName: 'Quản trị hệ thống Enterprise',
+          maintenance: false,
+          ssoSync: true,
+          timeout: 30,
+          minLen: 8,
+          enforce2fa: false,
+          maxFailed: 5,
+          host: 'smtp.quantri.gov.vn',
+          port: 587,
+          sender: 'no-reply@quantri.gov.vn',
+        }}
+      >
+        <Tabs
+          defaultActiveKey="general"
+          type="card"
+          items={[
+            {
+              key: 'general',
+              label: (
+                <span>
+                  <SettingOutlined /> Cấu hình chung
+                </span>
+              ),
+              children: (
+                <Card>
                   <Row gutter={16}>
                     <Col xs={24} sm={12}>
                       <Form.Item label="Tên hệ thống hiển thị" name="appName">
@@ -176,28 +200,18 @@ export function SettingsPage() {
                       </Form.Item>
                     </Col>
                   </Row>
-                </Form>
-              </Card>
-            ),
-          },
-          {
-            key: 'security',
-            label: (
-              <span>
-                <LockOutlined /> Bảo mật & Session
-              </span>
-            ),
-            children: (
-              <Card>
-                <Form
-                  layout="vertical"
-                  initialValues={{
-                    timeout: 30,
-                    minLen: 8,
-                    enforce2fa: false,
-                    maxFailed: 5,
-                  }}
-                >
+                </Card>
+              ),
+            },
+            {
+              key: 'security',
+              label: (
+                <span>
+                  <LockOutlined /> Bảo mật & Session
+                </span>
+              ),
+              children: (
+                <Card>
                   <Row gutter={16}>
                     <Col xs={24} sm={12}>
                       <Form.Item
@@ -248,27 +262,18 @@ export function SettingsPage() {
                       </Form.Item>
                     </Col>
                   </Row>
-                </Form>
-              </Card>
-            ),
-          },
-          {
-            key: 'email',
-            label: (
-              <span>
-                <MailOutlined /> Cổng Email SMTP
-              </span>
-            ),
-            children: (
-              <Card>
-                <Form
-                  layout="vertical"
-                  initialValues={{
-                    host: 'smtp.quantri.gov.vn',
-                    port: 587,
-                    sender: 'no-reply@quantri.gov.vn',
-                  }}
-                >
+                </Card>
+              ),
+            },
+            {
+              key: 'email',
+              label: (
+                <span>
+                  <MailOutlined /> Cổng Email SMTP
+                </span>
+              ),
+              children: (
+                <Card>
                   <Row gutter={16}>
                     <Col xs={24} sm={12}>
                       <Form.Item label="Máy chủ SMTP Host" name="host">
@@ -305,30 +310,30 @@ export function SettingsPage() {
                       </Button>
                     </Col>
                   </Row>
-                </Form>
-              </Card>
-            ),
-          },
-          {
-            key: 'matrix',
-            label: (
-              <span>
-                <SafetyCertificateOutlined /> Ma trận phân quyền
-              </span>
-            ),
-            children: (
-              <Card styles={{ body: { padding: 0 } }}>
-                <Table
-                  rowKey="key"
-                  columns={roleMatrixColumns}
-                  dataSource={roleMatrixData}
-                  pagination={false}
-                />
-              </Card>
-            ),
-          },
-        ]}
-      />
+                </Card>
+              ),
+            },
+            {
+              key: 'matrix',
+              label: (
+                <span>
+                  <SafetyCertificateOutlined /> Ma trận phân quyền
+                </span>
+              ),
+              children: (
+                <Card styles={{ body: { padding: 0 } }}>
+                  <Table
+                    rowKey="key"
+                    columns={roleMatrixColumns}
+                    dataSource={roleMatrixData}
+                    pagination={false}
+                  />
+                </Card>
+              ),
+            },
+          ]}
+        />
+      </Form>
     </PageContainer>
   );
 }

@@ -2,9 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import {
   Button,
-  Card,
-  Input,
-  Table,
   Tag,
   App,
   Tooltip,
@@ -12,13 +9,11 @@ import {
   Typography,
   Flex,
   Segmented,
-  Empty,
 } from 'antd';
 import {
   PlusOutlined,
   DeleteOutlined,
   EditOutlined,
-  SearchOutlined,
   DownloadOutlined,
 } from '@ant-design/icons';
 import type { TablePaginationConfig } from 'antd';
@@ -29,6 +24,7 @@ import {
   ConfirmAction,
   UserAvatar,
   ActiveTag,
+  DataTable,
 } from '../../../shared/ui';
 import { useUsersQuery, useDeleteUserMutation } from '../queries';
 import type { User } from '../types';
@@ -132,17 +128,17 @@ export function UserListPage() {
       title: 'Họ tên & Email',
       key: 'user_info',
       render: (_: unknown, record: User) => (
-        <Flex align="center" gap={12}>
+        <Flex align="center" gap={14}>
           <UserAvatar
             firstName={record.firstName}
             lastName={record.lastName}
             isActive={record.isActive}
-            size={34}
+            size={38}
           />
           <div>
             <Typography.Text
               strong
-              style={{ display: 'block', lineHeight: 1.3, fontSize: 15 }}
+              style={{ display: 'block', lineHeight: 1.3, fontSize: 16 }}
             >
               {record.lastName} {record.firstName}
             </Typography.Text>
@@ -156,21 +152,21 @@ export function UserListPage() {
     {
       title: 'Vai trò & Chức vụ',
       key: 'role',
-      width: 180,
+      width: 200,
       render: (_: unknown, record: User) => getRoleBadge(record),
     },
     {
       title: 'Trạng thái',
       dataIndex: 'isActive',
       key: 'isActive',
-      width: 140,
+      width: 150,
       render: (isActive: boolean) => <ActiveTag isActive={isActive} />,
     },
     {
       title: 'Ngày khởi tạo',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      width: 150,
+      width: 160,
       render: (createdAt?: string) => (
         <Typography.Text type="secondary" style={{ fontSize: 14 }}>
           {createdAt ? dayjs(createdAt).format('DD/MM/YYYY') : '—'}
@@ -183,12 +179,11 @@ export function UserListPage() {
       width: 120,
       align: 'center' as const,
       render: (_: unknown, record: User) => (
-        <Space size={4}>
+        <Space size={6}>
           <Tooltip title="Xem & Chỉnh sửa thông tin">
             <Button
               type="text"
-              size="small"
-              icon={<EditOutlined style={{ color: '#0866ff' }} />}
+              icon={<EditOutlined style={{ color: '#0866ff', fontSize: 16 }} />}
               onClick={() => navigate(`/users/${record.id}`)}
             />
           </Tooltip>
@@ -201,9 +196,8 @@ export function UserListPage() {
             <Tooltip title="Xóa tài khoản">
               <Button
                 type="text"
-                size="small"
                 danger
-                icon={<DeleteOutlined />}
+                icon={<DeleteOutlined style={{ fontSize: 16 }} />}
               />
             </Tooltip>
           </ConfirmAction>
@@ -217,7 +211,7 @@ export function UserListPage() {
       title="Danh sách người dùng"
       subtitle="Quản lý hồ sơ tài khoản, phân quyền quản trị và trạng thái truy cập."
       extra={
-        <Flex gap={10}>
+        <Flex gap={12}>
           <Button
             icon={<DownloadOutlined />}
             onClick={() =>
@@ -236,77 +230,37 @@ export function UserListPage() {
         </Flex>
       }
     >
-      {/* Filter & Role Tabs Bar */}
-      <Card size="small" style={{ marginBottom: 16 }}>
-        <Flex justify="space-between" align="center" wrap="wrap" gap={12}>
-          <Flex align="center" gap={12} wrap="wrap">
-            <Segmented
-              value={roleFilter}
-              onChange={(val) => setRoleFilter(val as string)}
-              options={[
-                { label: 'Tất cả tài khoản', value: 'all' },
-                { label: 'Quản trị viên', value: 'admin' },
-                { label: 'Trưởng phòng', value: 'manager' },
-                { label: 'Chuyên viên', value: 'user' },
-              ]}
-            />
-          </Flex>
-
-          <Flex align="center" gap={12} style={{ minWidth: 280 }}>
-            <Input.Search
-              placeholder="Tìm theo email, tên..."
-              defaultValue={search}
-              onSearch={handleSearch}
-              enterButton={
-                <Button type="primary" icon={<SearchOutlined />}>
-                  Tìm
-                </Button>
-              }
-              allowClear
-              style={{ width: '100%' }}
-            />
-          </Flex>
-        </Flex>
-      </Card>
-
-      {/* Main Users Table */}
-      <Card styles={{ body: { padding: 0 } }}>
-        <Table
-          rowKey="id"
-          columns={columns}
-          dataSource={filteredUsers}
-          loading={isLoading}
-          pagination={{
-            current: page,
-            pageSize: limit,
-            total: filteredUsers.length,
-            showSizeChanger: true,
-            showTotal: (total) => `Hiển thị ${total} tài khoản`,
-          }}
-          onChange={handleTableChange}
-          locale={{
-            emptyText: (
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={
-                  <div>
-                    <Typography.Text
-                      strong
-                      style={{ display: 'block', fontSize: 14 }}
-                    >
-                      Không tìm thấy tài khoản nào phù hợp
-                    </Typography.Text>
-                    <Typography.Text type="secondary" style={{ fontSize: 13 }}>
-                      Thử thay đổi từ khóa tìm kiếm hoặc bỏ lọc theo vai trò.
-                    </Typography.Text>
-                  </div>
-                }
-              />
-            ),
-          }}
-          scroll={{ x: 720 }}
-        />
-      </Card>
+      <DataTable<User>
+        rowKey="id"
+        columns={columns}
+        dataSource={filteredUsers}
+        loading={isLoading}
+        searchPlaceholder="Tìm theo email, họ tên..."
+        searchValue={search}
+        onSearchChange={handleSearch}
+        filterControls={
+          <Segmented
+            value={roleFilter}
+            onChange={(val) => setRoleFilter(val as string)}
+            options={[
+              { label: 'Tất cả tài khoản', value: 'all' },
+              { label: 'Quản trị viên', value: 'admin' },
+              { label: 'Trưởng phòng', value: 'manager' },
+              { label: 'Chuyên viên', value: 'user' },
+            ]}
+          />
+        }
+        emptyTitle="Không tìm thấy tài khoản nào phù hợp"
+        emptyDescription="Thử thay đổi từ khóa tìm kiếm hoặc bỏ lọc theo vai trò."
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: data?.total ?? filteredUsers.length,
+          showSizeChanger: true,
+          showTotal: (total) => `Hiển thị ${total} tài khoản`,
+        }}
+        onChange={handleTableChange}
+      />
     </PageContainer>
   );
 }

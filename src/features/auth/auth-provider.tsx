@@ -49,29 +49,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setOnUnauthorized(clearAuth);
   }, [getAccessToken, clearAuth]);
 
-  // Try to restore session from refresh token on mount
+  // Restore session from refresh token on mount
   useEffect(() => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
     if (!refreshToken) {
-      // Dev mode: Default mock admin user so UI can be inspected without requiring login
-      setUser({
-        id: 'usr-admin-01',
-        email: 'admin.phong@quantri.gov.vn',
-        firstName: 'Đức Phong',
-        lastName: 'Nguyễn',
-        roles: ['admin', 'user'],
-        provider: 'local',
-        isActive: true,
-      });
+      setUser(null);
       setInitializing(false);
       return;
     }
 
-    // Use raw httpClient to avoid interceptors issues during init
     httpClient
       .post<LoginResponse>('/auth/refresh', { refreshToken })
       .then((data) => {
-        // data is already unwrapped by interceptor
         setAuth(data as unknown as LoginResponse);
       })
       .catch(() => {
